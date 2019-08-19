@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="jp">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>従業員情報の新規登録画面</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <h1>EMD名簿管理システム</h1>
+
+    <h2>社員情報登録</h2>
+
+    <form action="/employee_insert_complete" method="POST">
+    <table border="1">
+        <tr>
+            <td>
+                <p>名前</p>
+                {{form['jpns_name']}}
+                {% for error in form.jpns_name.errors %}
+                    <span style="color: red;">{{ error }}</span>
+                {% endfor %}
+            </td>
+            <td>
+                <p>ふりがな</p>
+                {{form['jpns_kana']}}
+                {% for error in form.jpns_kana.errors %}
+                    <span style="color: red;">{{ error }}</span>
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>name</p>
+                {{form['roma_name']}}
+                {% for error in form.roma_name.errors %}
+                    <span style="color: red;">{{ error }}</span>
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>性別</p>
+                {{form['sex']}}
+                {% for error in form.sex.errors %}
+                    <span style="color: red;">{{ error }}</span>
+                {% endfor %}
+            </td>
+            <td>
+                <p>生年月日</p>
+                {{form['birth_date']}}
+                {% for error in form.birth_date.errors %}
+                    <span style="color: red;">{{ error }}</span>
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>郵便番号</p>
+                {{form['postal_code']}}
+                {% for error in form.postal_code.errors %}
+                    <span style="color: red;">{{ error }}</span>
+                {% endfor %}
+            </td>
+            <td>
+                <p>住所</p>
+                {{form['address']}}
+                {% for error in form.address.errors %}
+                    <span style="color: red;">{{ error }}</span>
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>電話番号</p>
+                {{form['tel_no']}}
+                {% for error in form.tel_no.errors %}
+                    <span style="color: red;">{{ error }}</span>
+                {% endfor %}
+            </td>
+            <td>
+            
+                <p>メールアドレス</p>
+                <p>入力不可(後に変更可能)</p>
+            <!--
+                {{form['mail_address']}}
+                {% for error in form.mail_address.errors %}
+                    <span style="color: red;">{{ error }}</span>
+                {% endfor %}
+            -->
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>最終学歴</p>
+                {{form['final_education']}}
+                {% for error in form.final_education.errors %}
+                    <span style="color: red;">{{ error }}</span>
+                {% endfor %}
+            </td>
+            <td>
+                <select name="division">
+                    <option value="卒業">卒業</option>
+                    <option value="中退">中退</option>
+                    <option value="在学中">在学中</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>従業員ID</p>
+                {{form['employee_id']}}
+                {% for error in form.employee_id.errors %}
+                    <span style="color: red;">{{ error }}</span>
+                {% endfor %}
+            </td>
+            <td>
+                <p>入社年月日</p>
+                {{form['join_date']}}
+                {% for error in form.join_date.errors %}
+                    <span style="color: red;">{{ error }}</span>
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>自社メールアドレス</p>
+                {{form['company_mail_address']}}
+                {% for error in form.company_mail_address.errors %}
+                    <span style="color: red;">{{ error }}</span>
+                {% endfor %}
+            </td>
+            <td>
+                <p>写真</p>
+                {{form['photo_image']}}
+                {% for error in form.photo_image.errors %}
+                    <span style="color: red;">{{ error }}</span>
+                {% endfor %}
+            </td>        
+        </tr>
+        <tr>
+            <td>
+                <p>所属支店</p>
+                <select name="branch_id">
+                    {% for (branch_id, branch_name) in branch_list %}
+                        <option value="{{ branch_id }}">{{ branch_name }}</option>
+                    {% endfor %}
+                </select>
+                {% for error in form.branch_id.errors %}
+                    <span style="color: red;">{{ error }}</span>
+                {% endfor %}    
+            </td>
+            <td>
+                <p>所属部署</p>
+                <select name="department_id">
+                    {% for (department_id, department_name) in department_list %}
+                        <option value="{{ department_id }}">{{ department_name }}</option>
+                    {% endfor %}
+                </select>
+                {% for error in form.department_id.errors %}
+                    <span style="color: red;">{{ error }}</span>
+                {% endfor %}
+            </td>
+        </tr>
+    </table>
+
+    <br />
+
+    <a href="http://192.168.33.11/employee_list">
+        <button type="button">戻る&nbsp;</button>
+    </a>
+    <input type="submit" value='登録'>
+    </form>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+  </body>
+</html>

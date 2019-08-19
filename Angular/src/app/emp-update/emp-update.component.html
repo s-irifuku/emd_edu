@@ -1,0 +1,109 @@
+<h2>社員情報編集</h2>
+
+<form [(formGroup)]="updForm" (ngSubmit)="onSumbit()">
+    <table>
+        <tr>
+            <td>
+                <p>名前</p>
+                <input type="text" formControlName="jpns_name">
+            </td>
+            <td>
+                <p>ふりがな</p>
+                <input type="text" formControlName="jpns_kana">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>name</p>
+                <input type="text" formControlName="roma_name">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>性別</p>
+                <label>
+                    <input type="radio" value="0" formControlName="sex">男性
+                </label>
+                <label>
+                    <input type="radio" value="1" formControlName="sex">女性
+                </label>
+            </td>
+            <td>
+                <p>生年月日</p>
+                <input type="text" formControlName="birth_date">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>郵便番号</p>
+                <input type="text" formControlName="postal_code">
+            </td>
+            <td>
+                <p>住所</p>
+                <input type="text" formControlName="address">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>電話番号</p>
+                <input type="text" formControlName="tel_no">
+            </td>
+            <td>
+                <p>メールアドレス</p>
+                <p>入力不可(後に変更可能)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>最終学歴</p>
+                <input type="text" formControlName="final_education">
+            </td>
+            <td>
+                <select formControlName="division">
+                    <option>卒業</option>
+                    <option>中退</option>
+                    <option>在学中</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>従業員ID</p>
+                <p>入力不可(後に変更可能)</p>
+            </td>
+            <td>
+                <p>入社年月日</p>
+                <input type="text" formControlName="join_date">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>自社メールアドレス</p>
+                <input type="text" formControlName="company_mail_address">
+            </td>
+            <td>
+                <p>写真</p>
+                <p>TODO</p>
+            </td>        
+        </tr>
+        <tr>
+            <td>
+                <p>所属支店</p>
+                <select formControlName="branch_id">
+                    <option>TODO</option>
+                </select>
+            </td>
+            <td>
+                <p>所属部署</p>
+                <select formControlName="department_id">
+                    <option>TODO</option>
+                </select>
+            </td>
+        </tr>
+    </table>
+
+    <br />
+
+    <input type="button" value="戻る" routerLink="/emp-detail">
+    <input type="submit" value='登録'>
+</form>

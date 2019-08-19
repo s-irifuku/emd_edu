@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="jp">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>従業員情報の詳細情報表示画面</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <h1>EMD名簿管理システム</h1>
+
+    <h2>{{ detail["jpns_name"] }}</h2>
+
+    <table border="1">
+        <tr>
+            <td>写真</td>
+            <td><img src="{{ detail['photo_image'] }}" /></td>
+        </tr>
+        <tr>
+            <td>名前</td>
+            <td>{{ detail["jpns_name"] }}</td>
+        </tr>
+        <tr>
+            <td>ふりがな</td>
+            <td>{{ detail["jpns_kana"] }}</td>
+        </tr>
+        <tr>
+            <td>name</td>
+            <td>{{ detail["roma_name"] }}</td>
+        </tr>
+        <tr>
+            <td>性別</td>
+            <td>
+                {% if detail["sex"] == "0" %}
+                    男性
+                {% elif detail["sex"] == "1" %}
+                    女性
+                {% endif %}
+            </td>
+            <td>生年月日</td>
+            <td>{{ detail["birth_date"] }}</td>
+        </tr>
+        <tr>
+            <td>住所</td>
+            <td>{{ detail["postal_code"] }}</td>
+            <td>{{ detail["address"] }}</td>
+        </tr>
+        <tr>
+            <td>電話番号</td>
+            <td>{{ detail["tel_no"] }}</td>
+        </tr>
+        <tr>
+            <td>メールアドレス</td>
+            <td>{{ detail["mail_address"] }}</td>
+        </tr>
+        <tr>
+            <td>最終学歴</td>
+            <td>{{ detail["final_education"] }}</td>
+        </tr>
+        <tr>
+            <td>従業員ID</td>
+            <td>{{ detail["detail_id"] }}</td>
+        </tr>
+        <tr>
+            <td>入社年月日</td>
+            <td>{{ detail["join_date"] }}</td>
+        </tr>
+        <tr>
+            <td>自社メールアドレス</td>
+            <td>{{ detail["company_mail_address"] }}</td>
+        </tr>    
+        <tr>
+            <td>支店</td>
+            <td>{{ detail["branch_name"] }}</td>
+            <td>部署</td>
+            <td>{{ detail["department_name"] }}</td>
+        </tr>
+    </table>
+
+    <br />
+
+    <a href="http://192.168.33.11/employee_update_input/{{detail['employee_id']}}">
+        <button type="button">編集&nbsp;</button>
+    </a>
+    <a href="http://192.168.33.11/employee_delete/{{detail['employee_id']}}">
+        <button type="button">削除&nbsp;</button>
+    </a>
+    <a href="http://192.168.33.11/employee_list">
+        <button type="button">戻る&nbsp;</button>
+    </a>
+        
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+  </body>
+</html>
