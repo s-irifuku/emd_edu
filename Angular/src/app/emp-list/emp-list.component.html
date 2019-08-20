@@ -13,15 +13,15 @@
             入社年月日
         </th>
     </tr>
-    <tr>
+    <tr *ngFor="let emp of getEmpList()">
         <td>
-            <a routerLink="/emp-detail">TODO</a>
+            <a routerLink="/emp-detail" (click)='onEmployeeId(emp.id)'>{{emp.id}}</a>
         </td>
         <td>
-            TODO
+            {{emp.name}}
         </td>
         <td>
-            TODO
+            {{emp.date}}
         </td>
     </tr>
 </table>
