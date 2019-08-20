@@ -5,7 +5,7 @@ from main import session, Employee
 
 #更新
 e_update = Blueprint('e_update', __name__)
-@e_update.route('/employee_update_input/<id>')
+@e_update.route('/api/employee_update_input/<id>')
 def employee_update_input(id):
     empInfo = {}
     for emp in session.query(Employee).filter(Employee.employee_id==id):
