@@ -6,7 +6,7 @@ import json
 
 #一覧表示
 e_list = Blueprint('e_list', __name__)
-@e_list.route('/employee_list', methods=["GET", "POST"])
+@e_list.route('/api/employee_list', methods=["GET"])
 def employee_list():
     id_list = []
     name_list = []
