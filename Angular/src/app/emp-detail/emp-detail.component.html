@@ -56,14 +56,22 @@
     </tr>    
     <tr>
         <td>支店</td>
-        <td>{{getEmpDetail().branchName}}</td>
+        <td [ngSwitch]="getEmpDetail().branchId">
+            <span *ngFor="let branch of branchList">
+                <p *ngSwitchCase="branch.id">{{branch.name}}</p>
+            </span>
+        </td>
         <td>部署</td>
-        <td>{{getEmpDetail().departmentName}}</td>
+        <td [ngSwitch]="getEmpDetail().departmentId">
+            <span *ngFor="let department of departmentList">
+                <p *ngSwitchCase="department.id">{{department.name}}</p>
+            </span>
+        </td>
     </tr>
 </table>
 
 <br />
 
 <input type="button" value="編集" routerLink="/emp-update">
-<input type="button" value="削除" routerLink="/emp-list">
-<input type="button" value="戻る" routerLink="/emp-list">
+<input type="button" value="削除" (click)="goDelete()">
+<input type="button" value="戻る" (click)="goList()">

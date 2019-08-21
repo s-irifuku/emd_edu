@@ -1,21 +1,21 @@
 <h2>社員情報登録</h2>
 
-<form [(formGroup)]="insForm" (ngSubmit)="onSumbit()">
+<form [formGroup]="insForm" (ngSubmit)="onSubmit()">
     <table>
         <tr>
             <td>
                 <p>名前</p>
-                <input type="text" formControlName="jpns_name">
+                <input type="text" formControlName="jpnsName">
             </td>
             <td>
                 <p>ふりがな</p>
-                <input type="text" formControlName="jpns_kana">
+                <input type="text" formControlName="jpnsKana">
             </td>
         </tr>
         <tr>
             <td>
                 <p>name</p>
-                <input type="text" formControlName="roma_name">
+                <input type="text" formControlName="romaName">
             </td>
         </tr>
         <tr>
@@ -30,13 +30,13 @@
             </td>
             <td>
                 <p>生年月日</p>
-                <input type="text" formControlName="birth_date">
+                <input type="text" formControlName="birthDate">
             </td>
         </tr>
         <tr>
             <td>
                 <p>郵便番号</p>
-                <input type="text" formControlName="postal_code">
+                <input type="text" formControlName="postalCode">
             </td>
             <td>
                 <p>住所</p>
@@ -46,7 +46,7 @@
         <tr>
             <td>
                 <p>電話番号</p>
-                <input type="text" formControlName="tel_no">
+                <input type="text" formControlName="telNo">
             </td>
             <td>
                 <p>メールアドレス</p>
@@ -56,7 +56,7 @@
         <tr>
             <td>
                 <p>最終学歴</p>
-                <input type="text" formControlName="final_education">
+                <input type="text" formControlName="finalEducation">
             </td>
             <td>
                 <select formControlName="division">
@@ -73,13 +73,13 @@
             </td>
             <td>
                 <p>入社年月日</p>
-                <input type="text" formControlName="join_date">
+                <input type="text" formControlName="joinDate">
             </td>
         </tr>
         <tr>
             <td>
                 <p>自社メールアドレス</p>
-                <input type="text" formControlName="company_mail_address">
+                <input type="text" formControlName="companyMailAddress">
             </td>
             <td>
                 <p>写真</p>
@@ -89,14 +89,20 @@
         <tr>
             <td>
                 <p>所属支店</p>
-                <select formControlName="branch_id">
-                    <option>TODO</option>
+                <select formControlName="branchId">
+                    <option *ngFor="let branch of branchList" 
+                        [selected]="branchId == branch.id" 
+                        [value]="branch.id">{{branch.name}}
+                    </option>
                 </select>
             </td>
             <td>
                 <p>所属部署</p>
-                <select formControlName="department_id">
-                    <option>TODO</option>
+                <select formControlName="departmentId">
+                    <option *ngFor="let department of departmentList" 
+                        [selected]="departmentId == department.id" 
+                        [value]="department.id">{{department.name}}
+                    </option>
                 </select>
             </td>
         </tr>

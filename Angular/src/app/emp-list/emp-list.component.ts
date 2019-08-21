@@ -12,6 +12,7 @@ export class EmpListComponent implements OnInit {
   constructor(private service: ServerCommunicationService) { }
 
   ngOnInit() {
+    // 従業員情報取得（一覧）
     this.service.reqEmpList();
   }
 

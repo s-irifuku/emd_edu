@@ -1,34 +1,74 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { EmpUpdateComponent } from './emp-update/emp-update.component';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-import { BranchList, DepartmentList, EmpList, EmpDetail } from './receive-json-model';
+import { Master, EmpList, EmpDetail } from './receive-json-model';
+
+const http_options = {
+  headers: new HttpHeaders({
+    'Content-Type': 'application/json'
+  })
+};
 
 @Injectable({
   providedIn: 'root'
 })
 export class ServerCommunicationService {
-  //コンポーネント間で使用する従業員ID
-  employee_id = '';
 
   constructor(private client: HttpClient) {}
 
-  //マスタデータ取得
+  //マスタデータ取得（支店、部署）
   private BranchList: {}[] = [{
-    branchId: ''
-    , branchName: ''
-  }]
+    branchIdList: ''
+    , branchNameList: ''
+  }];
+  private DepartmentList: {}[] = [{
+    departmentIdList: ''
+    , departmentNameList: ''
+  }];
+  reqMaster() {
+    var sendUrl = '/api/master';
+    this.client.get(sendUrl).subscribe((results: Master) => {
+      this.BranchList['branchIdList'] = results.branch_dictionary['branch_id_list'];
+      this.BranchList['branchNameList'] = results.branch_dictionary['branch_name_list'];
+      this.DepartmentList['departmentIdList'] = results.department_dictionary['department_id_list'];
+      this.DepartmentList['departmentNameList'] = results.department_dictionary['department_name_list'];
+    });
+  }
+  //【表示用】[(支店ID,支店名)]形式で返す
+  getDisplayBranchList() {
+    var displayBranchList: {}[] = [{
+      id: ''
+      , name: ''
+    }];
+    for(let index in this.BranchList['branchIdList']) {
+      displayBranchList[index] = {
+        id: this.BranchList['branchIdList'][index],
+        name: this.BranchList['branchNameList'][index]
+      };
+    }
+    return displayBranchList;
+  }
+  //【表示用】[(部署ID,部署名)]形式で返す
+  getDisplayDepartmentList() {
+    var displayDepartmentList: {}[] = [{
+      id: ''
+      , name: ''
+    }];
+    for(let index in this.DepartmentList['departmentIdList']) {
+      displayDepartmentList[index] = {
+        id: this.DepartmentList['departmentIdList'][index],
+        name: this.DepartmentList['departmentNameList'][index]
+      };
+    }
+    return displayDepartmentList;
+  }
 
-
-
-
-  // 一覧
+  // 従業員情報取得（一覧）
   private displayEmpList: {}[] = [{
     id: ''
     , name: ''
     , date: ''
   }];
-
   reqEmpList() {
     var sendUrl = '/api/employee_list';
     this.client.get(sendUrl).subscribe((results: EmpList) => {
@@ -45,17 +85,44 @@ export class ServerCommunicationService {
     return this.displayEmpList;
   }
 
-  //詳細
+  //コンポーネント間で使用する従業員ID
+  employee_id = '';
+
+  // 従業員情報取得（個別）
   private empDetail: EmpDetail = new EmpDetail();
   reqEmpDetail() {
-    var sendUrl = '/api/employee_detail/' + this.employee_id;
+    let sendUrl = '/api/employee_detail/' + this.employee_id;
     this.client.get(sendUrl).subscribe((result: EmpDetail) => {
       this.empDetail = result;
-      console.log(this.empDetail);
     });    
   }
   getEmpDetail() {
     return this.empDetail;
   }
 
+  // 従業員情報更新
+  reqEmpUpdate(updForm) {
+    let sendUrl = '/api/employee_update';
+    let body = JSON.stringify(updForm.value);
+    this.client.post(sendUrl, body, http_options).subscribe(() => {
+      console.log('更新完了');
+    });
+  }
+
+  // 従業員情報追加
+  reqEmpInsert(insForm) {
+    let sendUrl = '/api/employee_insert';
+    let body = JSON.stringify(insForm.value);
+    this.client.post(sendUrl, body, http_options).subscribe(() => {
+      console.log('追加完了');
+    });
+  }
+
+  // 従業員情報削除
+  reqEmpDelete() {
+    let sendUrl = '/api/employee_delete/' + this.employee_id;
+    this.client.delete(sendUrl, http_options).subscribe(() => {
+      console.log('削除完了');
+    });
+  }
 }

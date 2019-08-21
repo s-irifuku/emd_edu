@@ -12,35 +12,44 @@ import {ServerCommunicationService} from '../server-communication.service'
 })
 export class EmpUpdateComponent implements OnInit {
   updForm: FormGroup;
+  branchList = [];
+  departmentList = [];
 
-  constructor(private router: Router, private service: ServerCommunicationService) { }
+  constructor(
+    private service: ServerCommunicationService,
+    private fb: FormBuilder,
+    private router: Router
+  ) { }
 
   ngOnInit() {
-    //this.service.reqEmpUpdate();
-    
-    //this.updForm = this.fb.group({
-    //  jpns_name: [''],
-    //  jpns_kana: [''],
-    //roma_name: [''],
-    //  sex: [''],
-    //  birth_date: [''],
-    //  postal_code: [''],
-    //  address: [''],
-    //  tel_no: [''],
-    //  mail_address: [''],
-    //  final_education: [''],
-    //  division: [''],
-    //  employee_id: [''],
-    //  join_date: [''],
-    //  company_mail_address: [''],
-    //  photo_image: [''],
-    //  branch_id: [''],
-    //  department_id: ['']
-    //});
+    // 詳細情報を初期値に設定したフォーム作成
+    var empDetail = this.service.getEmpDetail();
+    this.updForm = this.fb.group({
+      jpnsName: [empDetail.jpnsName],
+      jpnsKana: [empDetail.jpnsKana],
+      romaName: [empDetail.romaName],
+      sex: [empDetail.sex],
+      birthDate: [empDetail.birthDate],
+      postalCode: [empDetail.postalCode],
+      address: [empDetail.address],
+      telNo: [empDetail.telNo],
+      mailAddress: [empDetail.mailAddress],
+      finalEducation: [empDetail.finalEducation],
+      division: [''],
+      employeeId: [empDetail.employeeId],
+      joinDate: [empDetail.joinDate],
+      companyMailAddress: [empDetail.companyMailAddress],
+      photoImage: [empDetail.photoImage],
+      branchId: [empDetail.branchId],
+      departmentId: [empDetail.departmentId]
+    });
+    this.branchList = this.service.getDisplayBranchList();
+    this.departmentList = this.service.getDisplayDepartmentList();
   }
 
   onSubmit() {
-    let result = this.updForm.value;
-    JSON.stringify(result);
+    this.service.reqEmpUpdate(this.updForm);
+    this.service.reqEmpList();
+    this.router.navigate(['/emp-list']);
   }
 }
