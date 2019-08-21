@@ -3,8 +3,8 @@
 from flask import request
 from flask_wtf import FlaskForm
 from wtforms import StringField, RadioField, ValidationError
-from c_branch import Branch_Enum
-from c_department import Department_Enum
+from constants.c_branch import Branch_Enum
+from constants.c_department import Department_Enum
 import re
 
 #バリデーションフォーム

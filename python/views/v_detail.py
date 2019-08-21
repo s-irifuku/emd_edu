@@ -2,8 +2,7 @@
 #coding:UTF-8
 from flask import Flask, Blueprint, jsonify
 from main import session, Employee
-import c_branch
-import c_department
+from constants import c_branch, c_department
 
 #詳細表示
 e_detail = Blueprint('e_detail', __name__)
@@ -26,7 +25,7 @@ def employee_detail(id):
             , "companyMailAddress": result.company_mail_address
             , "employeeId": result.employee_id
             , "photoImage": result.photo_image
-            , "branchName": c_branch.get_branch_name_by_branch_id(result.branch_id)
-            , "departmentName": c_department.get_department_name_by_department_id(result.department_id)
+            , "branchId": result.branch_id
+            , "departmentId": result.department_id
         }
     return jsonify(detail)
