@@ -6,10 +6,10 @@ from constants import c_branch, c_department
 
 #詳細表示
 e_detail = Blueprint('e_detail', __name__)
-@e_detail.route('/api/employee_detail/<id>')
-def employee_detail(id):
+@e_detail.route('/api/employee_detail/<employee_id>')
+def employee_detail(employee_id):
     detail = {}
-    for result in session.query(Employee).filter(Employee.employee_id==id):
+    for result in session.query(Employee).filter(Employee.employee_id==employee_id):
         detail = {
             "jpnsName": result.jpns_name     
             , "jpnsKana": result.jpns_kana
@@ -21,6 +21,7 @@ def employee_detail(id):
             , "sex": result.sex
             , "birthDate": result.birth_date
             , "finalEducation": result.final_education
+            , "educationDivision": result.education_division
             , "joinDate": result.join_date
             , "companyMailAddress": result.company_mail_address
             , "employeeId": result.employee_id

@@ -12,6 +12,7 @@ Base = declarative_base()
 #従業員
 class Employee(Base):
     __tablename__ = 'Employee'
+    e_id = Column(Integer, primary_key=True, autoincrement=True)#ID
     jpns_name = Column(String)#従業員名
     jpns_kana = Column(String)#よみがな
     roma_name = Column(String)#name
@@ -22,15 +23,17 @@ class Employee(Base):
     sex = Column(String)#性別
     birth_date = Column(String)#生年月日
     final_education = Column(String)#最終学歴
+    education_division = Column(String)#卒業区分
     join_date = Column(String)#入社年月日
     company_mail_address = Column(String)#自社メールアドレス
-    employee_id = Column(String, primary_key=True)#従業員ID
+    employee_id = Column(String)#従業員ID
     photo_image = Column(String)#写真イメージ
     branch_id = Column(String)#支店ID
     department_id = Column(String)#部署ID
     def __repr__(self):
         return "<Employee(\
-            jpns_name='%s'\
+            e_id='%s'\
+            , jpns_name='%s'\
             , jpns_kana='%s'\
             , roma_name='%s'\
             , postal_code='%s'\
@@ -40,6 +43,7 @@ class Employee(Base):
             , sex='%s'\
             , birth_date='%s'\
             , final_education='%s'\
+            , education_division='%s'\
             , join_date='%s'\
             , company_mail_address='%s'\
             , employee_id='%s'\
@@ -47,7 +51,8 @@ class Employee(Base):
             , branch_id='%s'\
             , department_id='%s'\
         >" %(\
-            self.jpns_name\
+            self.e_id\
+            , self.jpns_name\
             , self.jpns_kana\
             , self.roma_name\
             , self.postal_code\
@@ -57,6 +62,7 @@ class Employee(Base):
             , self.sex\
             , self.birth_date\
             , self.final_education\
+            , self.education_division\
             , self.join_date\
             , self.company_mail_address\
             , self.employee_id\

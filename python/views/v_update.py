@@ -19,8 +19,10 @@ def employee_update():
     update_emp.sex = request.json['sex']
     update_emp.birth_date = request.json['birthDate']
     update_emp.final_education = request.json['finalEducation']
+    update_emp.education_division = request.json['educationDivision']
     update_emp.join_date = request.json['joinDate']
     update_emp.company_mail_address = request.json['companyMailAddress']
     update_emp.employee_id = request.json['employeeId']
     session.commit()
+    session.close()
     return ''
