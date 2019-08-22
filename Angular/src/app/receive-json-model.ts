@@ -24,6 +24,7 @@ export class EmpDetail {
   sex: string;// 性別
   birthDate: string;// 生年月日
   finalEducation: string;// 最終学歴
+  educationDivision: string;//卒業区分
   joinDate: string;// 入社年月日
   companyMailAddress: string;// 自社メールアドレス
   employeeId: string;// 従業員ID

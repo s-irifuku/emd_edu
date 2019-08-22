@@ -19,8 +19,9 @@
     </tr>
     <tr>
         <td>性別</td>
-        <td>
-            {{getEmpDetail().sex}}
+        <td [ngSwitch]="getEmpDetail().sex">
+            <p *ngSwitchCase="0">男性</p>
+            <p *ngSwitchCase="1">女性</p>
         </td>
         <td>生年月日</td>
         <td>{{getEmpDetail().birthDate}}</td>
@@ -40,7 +41,13 @@
     </tr>
     <tr>
         <td>最終学歴</td>
-        <td>{{getEmpDetail().finalEducation}}</td>
+        <td>{{getEmpDetail().finalEducation}} 
+            <span [ngSwitch]="getEmpDetail().educationDivision">
+                <p *ngSwitchCase="0">卒業</p>
+                <p *ngSwitchCase="1">中退</p>
+                <p *ngSwitchCase="2">在学中</p>
+            </span>
+        </td>
     </tr>
     <tr>
         <td>従業員ID</td>

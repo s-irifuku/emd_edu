@@ -5,16 +5,19 @@
         <tr>
             <td>
                 <p>名前</p>
-                <input type="text" formControlName="jpnsName">
+                <p class="explanation">苗字と名前の間に半角スペースを入力して下さい。<br>例：協会 太郎</p>
+                <input type="text" formControlName="jpnsName">                
             </td>
             <td>
                 <p>ふりがな</p>
+                <p class="explanation">苗字と名前の間に半角スペースを入力して下さい。<br>例：きょうかい たろう</p>
                 <input type="text" formControlName="jpnsKana">
             </td>
         </tr>
         <tr>
             <td>
                 <p>name</p>
+                <p class="explanation">苗字と名前の間に半角スペースを入力して下さい。<br>例：taro kyokai</p>
                 <input type="text" formControlName="romaName">
             </td>
         </tr>
@@ -30,12 +33,14 @@
             </td>
             <td>
                 <p>生年月日</p>
+                <p class="explanation">yyyy-MM-dd形式で入力して下さい。<br>例：0000-00-00</p>
                 <input type="text" formControlName="birthDate">
             </td>
         </tr>
         <tr>
             <td>
                 <p>郵便番号</p>
+                <p class="explanation">yyyy-MM-dd形式で入力して下さい。<br>例：000-0000</p>
                 <input type="text" formControlName="postalCode">
             </td>
             <td>
@@ -46,6 +51,7 @@
         <tr>
             <td>
                 <p>電話番号</p>
+                <p class="explanation">0000-0000-0000形式(-前後の桁数は変動化)で入力して下さい。</p>
                 <input type="text" formControlName="telNo">
             </td>
             <td>
@@ -58,15 +64,13 @@
                 <p>最終学歴</p>
                 <input type="text" formControlName="finalEducation">
             </td>
-            <!--
             <td>
-                <select formControlName="division">
-                    <option>卒業</option>
-                    <option>中退</option>
-                    <option>在学中</option>
+                <select formControlName="educationDivision">
+                    <option value="0">卒業</option>
+                    <option value="1">中退</option>
+                    <option value="2">在学中</option>
                 </select>
             </td>
-            -->
         </tr>
         <tr>
             <td>
@@ -75,6 +79,7 @@
             </td>
             <td>
                 <p>入社年月日</p>
+                <p class="explanation">yyyy-MM-dd形式で入力して下さい。<br>例：0000-00-00</p>
                 <input type="text" formControlName="joinDate">
             </td>
         </tr>

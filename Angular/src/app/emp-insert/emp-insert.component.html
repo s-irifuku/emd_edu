@@ -5,17 +5,29 @@
         <tr>
             <td>
                 <p>名前</p>
+                <p class="explanation">苗字と名前の間に半角スペースを入力して下さい。<br>例：協会 太郎</p>
                 <input type="text" formControlName="jpnsName">
+                <div *ngIf="jpnsName.invalid">
+                    名前を入力して下さい
+                </div>
             </td>
             <td>
                 <p>ふりがな</p>
+                <p class="explanation">苗字と名前の間に半角スペースを入力して下さい。<br>例：きょうかい たろう</p>
                 <input type="text" formControlName="jpnsKana">
+                <div *ngIf="jpnsKana.invalid">
+                    ふりがなを入力して下さい
+                </div>
             </td>
         </tr>
         <tr>
             <td>
                 <p>name</p>
+                <p class="explanation">苗字と名前の間に半角スペースを入力して下さい。<br>例：taro kyokai</p>
                 <input type="text" formControlName="romaName">
+                <div *ngIf="romaName.invalid">
+                    nameを入力して下さい
+                </div>
             </td>
         </tr>
         <tr>
@@ -27,26 +39,44 @@
                 <label>
                     <input type="radio" value="1" formControlName="sex">女性
                 </label>
+                <div *ngIf="sex.invalid">
+                    性別を入力して下さい
+                </div>
             </td>
             <td>
                 <p>生年月日</p>
+                <p class="explanation">yyyy-MM-dd形式で入力して下さい。<br>例：0000-00-00</p>
                 <input type="text" formControlName="birthDate">
+                <div *ngIf="birthDate.invalid">
+                        生年月日を入力して下さい
+                </div>
             </td>
         </tr>
         <tr>
             <td>
                 <p>郵便番号</p>
+                <p class="explanation">yyyy-MM-dd形式で入力して下さい。<br>例：000-0000</p>
                 <input type="text" formControlName="postalCode">
+                <div *ngIf="postalCode.invalid">
+                    郵便番号を入力して下さい
+                </div>
             </td>
             <td>
                 <p>住所</p>
                 <input type="text" formControlName="address">
+                <div *ngIf="address.invalid">
+                    住所を入力して下さい
+                </div>
             </td>
         </tr>
         <tr>
             <td>
                 <p>電話番号</p>
+                <p class="explanation">0000-0000-0000形式(-前後の桁数は変動化)で入力して下さい。</p>
                 <input type="text" formControlName="telNo">
+                <div *ngIf="telNo.invalid">
+                    電話番号を入力して下さい
+                </div>
             </td>
             <td>
                 <p>メールアドレス</p>
@@ -57,13 +87,19 @@
             <td>
                 <p>最終学歴</p>
                 <input type="text" formControlName="finalEducation">
+                <div *ngIf="finalEducation.invalid">
+                    最終学歴を入力して下さい
+                </div>
             </td>
             <td>
-                <select formControlName="division">
-                    <option>卒業</option>
-                    <option>中退</option>
-                    <option>在学中</option>
+                <select formControlName="educationDivision">
+                    <option value='0'>卒業</option>
+                    <option value='1'>中退</option>
+                    <option value='2'>在学中</option>
                 </select>
+                <div *ngIf="educationDivision.invalid">
+                    卒業区分を入力して下さい
+                </div>
             </td>
         </tr>
         <tr>
@@ -73,13 +109,20 @@
             </td>
             <td>
                 <p>入社年月日</p>
+                <p class="explanation">yyyy-MM-dd形式で入力して下さい。<br>例：0000-00-00</p>
                 <input type="text" formControlName="joinDate">
+                <div *ngIf="joinDate.invalid">
+                    入社年月日を入力して下さい
+                </div>
             </td>
         </tr>
         <tr>
             <td>
                 <p>自社メールアドレス</p>
                 <input type="text" formControlName="companyMailAddress">
+                <div *ngIf="companyMailAddress.invalid">
+                    自社メールアドレスを入力して下さい
+                </div>
             </td>
             <td>
                 <p>写真</p>
@@ -91,19 +134,23 @@
                 <p>所属支店</p>
                 <select formControlName="branchId">
                     <option *ngFor="let branch of branchList" 
-                        [selected]="branchId == branch.id" 
                         [value]="branch.id">{{branch.name}}
                     </option>
                 </select>
+                <div *ngIf="branchId.invalid">
+                    所属支店を入力して下さい
+                </div>
             </td>
             <td>
                 <p>所属部署</p>
                 <select formControlName="departmentId">
                     <option *ngFor="let department of departmentList" 
-                        [selected]="departmentId == department.id" 
                         [value]="department.id">{{department.name}}
                     </option>
                 </select>
+                <div *ngIf="departmentId.invalid">
+                    所属部署を入力して下さい
+                </div>
             </td>
         </tr>
     </table>
@@ -111,5 +158,5 @@
     <br />
 
     <input type="button" value="戻る" routerLink="/emp-list">
-    <input type="submit" value='登録'>
+    <input type="submit" #submit value='登録' [disabled]="insForm.invalid" >
 </form>

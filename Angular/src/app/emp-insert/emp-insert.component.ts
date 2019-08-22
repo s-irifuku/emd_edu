@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormGroup, FormBuilder } from '@angular/forms'
+import { FormGroup, FormBuilder, Validators} from '@angular/forms'
 
 import {ServerCommunicationService} from '../server-communication.service'
 
@@ -22,31 +22,51 @@ export class EmpInsertComponent implements OnInit {
 
   ngOnInit() {
     this.insForm = this.fb.group({
-      jpns_name: [''],
-      jpns_kana: [''],
-      roma_name: [''],
-      sex: [''],
-      birth_date: [''],
-      postal_code: [''],
-      address: [''],
-      tel_no: [''],
-      mail_address: [''],
-      final_education: [''],
-      division: [''],
-      employee_id: [''],
-      join_date: [''],
-      company_mail_address: [''],
-      photo_image: [''],
-      branch_id: [''],
-      department_id: ['']
+      jpnsName: ['', [Validators.required]],
+      jpnsKana: ['', [Validators.required]],
+      romaName: ['', [Validators.required]],
+      sex: ['', [Validators.required]],
+      birthDate: ['', [Validators.required]],
+      postalCode: ['', [Validators.required]],
+      address: ['', [Validators.required]],
+      telNo: ['', [Validators.required]],
+      mailAddress: [''],
+      finalEducation: ['', [Validators.required]],
+      educationDivision: ['', [Validators.required]],
+      employeeId: [''],
+      joinDate: ['', [Validators.required]],
+      companyMailAddress: ['', [Validators.required]],
+      photoImage: [''],
+      branchId: ['', [Validators.required]],
+      departmentId: ['', [Validators.required]]
     });
     this.branchList = this.service.getDisplayBranchList();
     this.departmentList = this.service.getDisplayDepartmentList();
   }
 
+  get jpnsName() { return this.insForm.get('jpnsName'); }
+  get jpnsKana() { return this.insForm.get('jpnsKana'); }
+  get romaName() { return this.insForm.get('romaName'); }
+  get sex() { return this.insForm.get('sex'); }
+  get birthDate() { return this.insForm.get('birthDate'); }
+  get postalCode() { return this.insForm.get('postalCode'); }
+  get address() { return this.insForm.get('address'); }
+  get telNo() { return this.insForm.get('telNo'); }
+  get mailAddress() { return this.insForm.get('mailAddress'); }
+  get finalEducation() { return this.insForm.get('finalEducation'); }
+  get educationDivision() { return this.insForm.get('educationDivision'); }
+  get employeeId() { return this.insForm.get('employeeId');}
+  get joinDate() { return this.insForm.get('joinDate'); }
+  get companyMailAddress() { return this.insForm.get('companyMailAddress'); }
+  get photoImage() { return this.insForm.get('photoImage'); }
+  get branchId() { return this.insForm.get('branchId'); }
+  get departmentId() { return this.insForm.get('departmentId'); }
+
   onSubmit() {
-    this.service.reqEmpInsert(this.insForm);
-    this.service.reqEmpList();
-    this.router.navigate(['/emp-list']);
+    if (!this.insForm.invalid) {
+      this.service.reqEmpInsert(this.insForm);
+      //this.service.reqEmpList();
+      //this.router.navigate(['/emp-list']);
+    }
   }
 }

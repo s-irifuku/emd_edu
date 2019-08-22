@@ -35,7 +35,7 @@ export class EmpUpdateComponent implements OnInit {
       telNo: [empDetail.telNo],
       mailAddress: [empDetail.mailAddress],
       finalEducation: [empDetail.finalEducation],
-      division: [''],
+      educationDivision: [empDetail.educationDivision],
       employeeId: [empDetail.employeeId],
       joinDate: [empDetail.joinDate],
       companyMailAddress: [empDetail.companyMailAddress],
