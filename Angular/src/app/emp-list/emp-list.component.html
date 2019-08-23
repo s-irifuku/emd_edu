@@ -1,6 +1,58 @@
 
 <input type="button" value="新規登録" routerLink="/emp-insert">
 
+<form [formGroup]="searchForm" (ngSubmit)="onSubmit()">
+    <table>
+        <tr>
+            <td>
+                <p>名前</p>
+                <input type="text" formControlName="jpnsName">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>出身地</p>
+                <input type="text" formControlName="address">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>年齢</p>
+                <input type="text" formControlName="overAge">以上
+                <input type="text" formControlName="underAge">以下
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>入社年月日</p>
+                <input type="text" formControlName="joinYear">年
+                <input type="text" formControlName="joinMonth" [disabled]="joinYear.touched">月
+                <input type="text" formControlName="joinDate" disabled="disabled">日
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>入社歴</p>
+                <input type="text" formControlName="seniority">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>最終学歴</p>
+                <input type="text" formControlName="finalEducation">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>従業員ID</p>
+                <input type="text" formControlName="employeeId">
+            </td>
+        </tr>        
+    </table>
+    <input type="submit" value='検索'>
+</form>
+    
+
 <table>
     <tr>
         <th>
@@ -25,6 +77,5 @@
         </td>
     </tr>
 </table>
-
 
 

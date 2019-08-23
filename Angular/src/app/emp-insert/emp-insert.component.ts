@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators} from '@angular/forms'
 
 import {ServerCommunicationService} from '../server-communication.service'
@@ -16,26 +15,23 @@ export class EmpInsertComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private service: ServerCommunicationService,
-    private router: Router
+    private service: ServerCommunicationService
   ) { }
 
   ngOnInit() {
     this.insForm = this.fb.group({
       jpnsName: ['', [Validators.required]],
       jpnsKana: ['', [Validators.required]],
-      romaName: ['', [Validators.required]],
+      romaName: ['', [Validators.required, Validators.pattern('^[a-z]+? {1}[a-z]+?$')]],
       sex: ['', [Validators.required]],
-      birthDate: ['', [Validators.required]],
-      postalCode: ['', [Validators.required]],
+      birthDate: ['', [Validators.required, Validators.pattern('^[0-9]{4}[-]{1}[0-9]{2}[-]{1}[0-9]{2}')]],
+      postalCode: ['', [Validators.required, Validators.pattern('^[0-9]{3}[-]{1}[0-9]{4}$')]],
       address: ['', [Validators.required]],
-      telNo: ['', [Validators.required]],
-      mailAddress: [''],
+      telNo: ['', [Validators.required, Validators.pattern('^[0-9]+?[-]{1}[0-9]+?[-]{1}[0-9]+?$')]],
+      mailAddress: ['', [Validators.required, Validators.pattern('^[a-z]+[@]{1}[a-z]+[.]{1}[a-z]+$')]],
       finalEducation: ['', [Validators.required]],
       educationDivision: ['', [Validators.required]],
-      employeeId: [''],
-      joinDate: ['', [Validators.required]],
-      companyMailAddress: ['', [Validators.required]],
+      joinDate: ['', [Validators.required, Validators.pattern('^[0-9]{4}[-]{1}[0-9]{2}[-]{1}[0-9]{2}')]],
       photoImage: [''],
       branchId: ['', [Validators.required]],
       departmentId: ['', [Validators.required]]
@@ -55,9 +51,7 @@ export class EmpInsertComponent implements OnInit {
   get mailAddress() { return this.insForm.get('mailAddress'); }
   get finalEducation() { return this.insForm.get('finalEducation'); }
   get educationDivision() { return this.insForm.get('educationDivision'); }
-  get employeeId() { return this.insForm.get('employeeId');}
   get joinDate() { return this.insForm.get('joinDate'); }
-  get companyMailAddress() { return this.insForm.get('companyMailAddress'); }
   get photoImage() { return this.insForm.get('photoImage'); }
   get branchId() { return this.insForm.get('branchId'); }
   get departmentId() { return this.insForm.get('departmentId'); }
@@ -65,8 +59,12 @@ export class EmpInsertComponent implements OnInit {
   onSubmit() {
     if (!this.insForm.invalid) {
       this.service.reqEmpInsert(this.insForm);
-      //this.service.reqEmpList();
-      //this.router.navigate(['/emp-list']);
     }
+  }
+
+  get errorMessage() {return this.service.insertErrorMessage;}
+
+  onBack() {
+    this.service.insertErrorMessage = '';
   }
 }

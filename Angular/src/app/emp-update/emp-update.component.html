@@ -6,12 +6,18 @@
             <td>
                 <p>名前</p>
                 <p class="explanation">苗字と名前の間に半角スペースを入力して下さい。<br>例：協会 太郎</p>
-                <input type="text" formControlName="jpnsName">                
+                <input type="text" formControlName="jpnsName">
+                <div *ngIf="jpnsName.invalid" class="error">
+                    名前を入力して下さい
+                </div>
             </td>
             <td>
                 <p>ふりがな</p>
                 <p class="explanation">苗字と名前の間に半角スペースを入力して下さい。<br>例：きょうかい たろう</p>
                 <input type="text" formControlName="jpnsKana">
+                <div *ngIf="jpnsKana.invalid" class="error">
+                    ふりがなを入力して下さい
+                </div>
             </td>
         </tr>
         <tr>
@@ -19,6 +25,12 @@
                 <p>name</p>
                 <p class="explanation">苗字と名前の間に半角スペースを入力して下さい。<br>例：taro kyokai</p>
                 <input type="text" formControlName="romaName">
+                <div *ngIf="romaName.errors != null && romaName.errors.required != null" class="error">
+                    nameを入力して下さい
+                </div>
+                <div *ngIf="romaName.errors != null && romaName.errors.pattern != null" class="error">
+                    アルファベット小文字で苗字と名前の間に半角スペースを入れて入力して下さい
+                </div>
             </td>
         </tr>
         <tr>
@@ -30,11 +42,20 @@
                 <label>
                     <input type="radio" value="1" formControlName="sex">女性
                 </label>
+                <div *ngIf="sex.invalid" class="error">
+                    性別を入力して下さい。
+                </div>
             </td>
             <td>
                 <p>生年月日</p>
                 <p class="explanation">yyyy-MM-dd形式で入力して下さい。<br>例：0000-00-00</p>
                 <input type="text" formControlName="birthDate">
+                <div *ngIf="birthDate.errors != null && birthDate.errors.required != null" class="error">
+                    生年月日を入力して下さい。
+                </div>
+                <div *ngIf="birthDate.errors != null && birthDate.errors.pattern != null" class="error">
+                    yyyy-MM-dd形式で入力して下さい。
+                </div>
             </td>
         </tr>
         <tr>
@@ -42,10 +63,19 @@
                 <p>郵便番号</p>
                 <p class="explanation">yyyy-MM-dd形式で入力して下さい。<br>例：000-0000</p>
                 <input type="text" formControlName="postalCode">
+                <div *ngIf="postalCode.errors != null && postalCode.errors.required != null" class="error">
+                    郵便番号を入力して下さい
+                </div>
+                <div *ngIf="postalCode.errors != null && postalCode.errors.pattern != null" class="error">
+                    000－0000形式で入力して下さい。
+                </div>
             </td>
             <td>
                 <p>住所</p>
                 <input type="text" formControlName="address">
+                <div *ngIf="address.invalid" class="error">
+                    住所を入力して下さい
+                </div>
             </td>
         </tr>
         <tr>
@@ -53,16 +83,32 @@
                 <p>電話番号</p>
                 <p class="explanation">0000-0000-0000形式(-前後の桁数は変動化)で入力して下さい。</p>
                 <input type="text" formControlName="telNo">
+                <div *ngIf="telNo.errors != null && telNo.errors.required != null" class="error">
+                    電話番号を入力して下さい
+                </div>
+                <div *ngIf="telNo.errors != null && telNo.errors.pattern != null" class="error">
+                    0000-0000-0000形式(-前後の桁数は変動化)で入力して下さい。
+                </div>
             </td>
             <td>
                 <p>メールアドレス</p>
-                <p>入力不可(後に変更可能)</p>
+                <p class="explanation">aaa@aaa.aaa形式で入力して下さい。</p>
+                <input type="text" formControlName="mailAddress">
+                <div *ngIf="mailAddress.errors != null && mailAddress.errors.required != null" class="error">
+                    メールアドレスを入力して下さい
+                </div>
+                <div *ngIf="mailAddress.errors != null && mailAddress.errors.pattern != null" class="error">
+                    aaa@aaa.aaa形式で入力して下さい。
+                </div>
             </td>
         </tr>
         <tr>
             <td>
                 <p>最終学歴</p>
                 <input type="text" formControlName="finalEducation">
+                <div *ngIf="finalEducation.invalid" class="error">
+                    最終学歴を入力して下さい
+                </div>
             </td>
             <td>
                 <select formControlName="educationDivision">
@@ -70,23 +116,35 @@
                     <option value="1">中退</option>
                     <option value="2">在学中</option>
                 </select>
+                <div *ngIf="educationDivision.invalid" class="error">
+                    卒業区分を入力して下さい
+                </div>
             </td>
         </tr>
         <tr>
             <td>
-                <p>従業員ID</p>
-                <p>入力不可(後に変更可能)</p>
-            </td>
-            <td>
                 <p>入社年月日</p>
                 <p class="explanation">yyyy-MM-dd形式で入力して下さい。<br>例：0000-00-00</p>
                 <input type="text" formControlName="joinDate">
+                <div *ngIf="joinDate.errors != null && joinDate.errors.required != null" class="error">
+                    入社年月日を入力して下さい。
+                </div>
+                <div *ngIf="joinDate.errors != null && joinDate.errors.pattern != null" class="error">
+                    yyyy-MM-dd形式で入力して下さい。
+                </div>
             </td>
         </tr>
         <tr>
             <td>
                 <p>自社メールアドレス</p>
+                <p class="explanation">aaa@tky.emdes.co.jp形式で入力して下さい(tkyはsdi,ngyでも可)</p>
                 <input type="text" formControlName="companyMailAddress">
+                <div *ngIf="companyMailAddress.errors != null && companyMailAddress.errors.required != null" class="error">
+                    入社年月日を入力して下さい。
+                </div>
+                <div *ngIf="companyMailAddress.errors != null && companyMailAddress.errors.pattern != null" class="error">
+                    aaa@tky.emdes.co.jp形式で入力して下さい(tkyはsdi,ngyでも可)
+                </div>
             </td>
             <td>
                 <p>写真</p>
@@ -102,6 +160,9 @@
                         [value]="branch.id">{{branch.name}}
                     </option>
                 </select>
+                <div *ngIf="branchId.invalid" class="error">
+                    所属支店を入力して下さい
+                </div>
             </td>
             <td>
                 <p>所属部署</p>
@@ -111,12 +172,15 @@
                         [value]="department.id">{{department.name}}
                     </option>
                 </select>
+                <div *ngIf="departmentId.invalid" class="error">
+                    所属部署を入力して下さい
+                </div>
             </td>
         </tr>
     </table>
 
-    <br />
+    <h3 class="error">{{errorMessage}}</h3>
 
     <input type="button" value="戻る" routerLink="/emp-detail">
-    <input type="submit" value='登録'>
+    <input type="submit" value='登録' [disabled]="updForm.invalid">
 </form>

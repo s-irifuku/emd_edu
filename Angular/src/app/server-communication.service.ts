@@ -1,7 +1,9 @@
-import { Injectable } from '@angular/core';
+import { Injectable, ɵCodegenComponentFactoryResolver } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 import { Master, EmpList, EmpDetail } from './receive-json-model';
+import { send } from 'q';
 
 const http_options = {
   headers: new HttpHeaders({
@@ -14,7 +16,10 @@ const http_options = {
 })
 export class ServerCommunicationService {
 
-  constructor(private client: HttpClient) {}
+  constructor(
+    private client: HttpClient,
+    private router: Router
+  ) {}
 
   //マスタデータ取得（支店、部署）
   private BranchList: {}[] = [{
@@ -100,21 +105,51 @@ export class ServerCommunicationService {
     return this.empDetail;
   }
 
+  // 従業員情報検索
+  reqEmpSearch(searchForm) {
+    let sendUrl = '/api/employee_search';
+    let body = JSON.stringify(searchForm.value);
+    this.client.post(sendUrl, body, http_options).subscribe((result) => {
+      
+    })
+
+  }
+
+
+
   // 従業員情報更新
+  updateErrorMessage = '';
   reqEmpUpdate(updForm) {
     let sendUrl = '/api/employee_update';
     let body = JSON.stringify(updForm.value);
-    this.client.post(sendUrl, body, http_options).subscribe(() => {
-      console.log('更新完了');
+    this.client.post(sendUrl, body, http_options).subscribe((result) => {
+      switch (result['res']) {
+        case 'OK':
+          this.updateErrorMessage = '';
+          this.reqEmpList();
+          this.router.navigate(['/emp-list']);
+          break;
+        case 'NG':
+          this.updateErrorMessage = result['msg'];
+      }
     });
   }
 
   // 従業員情報追加
+  insertErrorMessage = '';
   reqEmpInsert(insForm) {
     let sendUrl = '/api/employee_insert';
     let body = JSON.stringify(insForm.value);
-    this.client.post(sendUrl, body, http_options).subscribe(() => {
-      console.log('追加完了');
+    this.client.post(sendUrl, body, http_options).subscribe((result) => {
+      switch (result['res']) {
+        case 'OK':
+          this.insertErrorMessage = '';
+          this.reqEmpList();
+          this.router.navigate(['/emp-list']);
+          break;
+        case 'NG':
+          this.insertErrorMessage = result['msg'];
+      }
     });
   }
 

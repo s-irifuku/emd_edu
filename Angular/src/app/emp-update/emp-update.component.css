@@ -3,3 +3,9 @@ table, th, td {
     border: 1px solid #ccc;
     line-height: 1.5;
 }
+.explanation {
+    opacity: 0.5;
+}
+.error {
+    color: red;
+}
