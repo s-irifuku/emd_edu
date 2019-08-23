@@ -18,15 +18,6 @@ def get_department_name_by_department_id(department_id):
             return name
     return ''
 
-#(部署ID, 部署名)形式のリストを返す
-def get_department_list():
-    id_list = []
-    name_list = []
-    for (id, name) in session.query(Department.department_id, Department.department_name):
-        id_list.append(id)
-        name_list.append(name)
-    return zip(id_list, name_list)
-
 #{id_list:[部署ID], name_list:[部署名]}形式の辞書を返す
 def get_department_of_dictionary():
     id_list = []
