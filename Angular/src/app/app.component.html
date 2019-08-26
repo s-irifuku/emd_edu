@@ -1,6 +1,8 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <div>
-  <p>EMD名簿管理システム</p>
+  <p>{{systemName}}</p>
 </div>
+<a routerLink="/emp-list" (click)='onEmpSystem()'>EMD名簿管理システム</a><br>
+<a routerLink="/res-list" (click)='onResSystem()'>EMD機器貸出管理システム</a><br>
 
 <router-outlet></router-outlet>

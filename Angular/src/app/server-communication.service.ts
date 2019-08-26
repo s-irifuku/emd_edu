@@ -1,9 +1,8 @@
-import { Injectable, ɵCodegenComponentFactoryResolver } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 
 import { Master, EmpList, EmpDetail } from './receive-json-model';
-import { send } from 'q';
 
 const http_options = {
   headers: new HttpHeaders({
@@ -110,12 +109,27 @@ export class ServerCommunicationService {
     let sendUrl = '/api/employee_search';
     let body = JSON.stringify(searchForm.value);
     this.client.post(sendUrl, body, http_options).subscribe((result) => {
-      
+      switch (result['empType']) {
+        case 'list':
+          console.log(this.displayEmpList)
+          this.displayEmpList = [{id: '', name: '', date: ''}];
+          for (let index in result['empList']['idList']) {
+            this.displayEmpList[index] = {
+              id: result['empList']['idList'][index]
+              , name: result['empList']['nameList'][index]
+              , date: result['empList']['dateList'][index]
+            };
+          }
+          console.log(this.displayEmpList)
+          break;
+        case 'detail':
+          this.employee_id = result['employeeId']
+          this.router.navigate(['/emp-detail']);
+          break;
+      }
     })
 
   }
-
-
 
   // 従業員情報更新
   updateErrorMessage = '';

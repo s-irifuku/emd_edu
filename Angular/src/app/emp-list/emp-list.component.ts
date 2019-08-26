@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
-import {ServerCommunicationService} from '../server-communication.service'
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { ServerCommunicationService } from '../server-communication.service'
 
 @Component({
   selector: 'app-emp-list',
@@ -19,10 +19,10 @@ export class EmpListComponent implements OnInit {
   ngOnInit() {
     // 従業員情報取得（一覧）
     this.service.reqEmpList();
-
+    // 検索フォーム作成
     this.searchForm = this.fb.group({
       jpnsName: [''],
-      address: [''],
+      prefecture: ['', [Validators.pattern('^.+?[都道府県]$')]],
       overAge: [''],
       underAge: [''],
       joinYear: [''],
@@ -34,9 +34,7 @@ export class EmpListComponent implements OnInit {
     })
   }
 
-  get joinYear() { return this.searchForm.get('joinYear'); }
-  get joinMonth() { return this.searchForm.get('joinMonth'); }
-  
+  get prefecture() { return this.searchForm.get('prefecture'); }  
 
   getEmpList() {
     return this.service.getEmpList();
@@ -47,8 +45,8 @@ export class EmpListComponent implements OnInit {
   }
 
   onSubmit() {
-    //if(!this.searchForm.invalid) {
-    //this.service.reqEmpSearch(this.searchForm);
-    //}
+    if(!this.searchForm.invalid) {
+      this.service.reqEmpSearch(this.searchForm);
+    }
   }
 }

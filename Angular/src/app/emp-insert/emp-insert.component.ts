@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators} from '@angular/forms'
 
-import {ServerCommunicationService} from '../server-communication.service'
+import { ServerCommunicationService } from '../server-communication.service'
 
 @Component({
   selector: 'app-emp-insert',

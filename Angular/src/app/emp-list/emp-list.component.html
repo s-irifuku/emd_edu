@@ -1,58 +1,73 @@
 
 <input type="button" value="新規登録" routerLink="/emp-insert">
 
+<h2>検索条件</h2>
 <form [formGroup]="searchForm" (ngSubmit)="onSubmit()">
     <table>
         <tr>
+            <th>
+                名前
+            </th>
+            <th>
+                出身地（都道府県単位）
+            </th>
+            <th>
+                年齢
+            </th>
+            <th>
+                最終学歴（区分）
+            </th>
+        </tr>
+        <tr>
             <td>
-                <p>名前</p>
                 <input type="text" formControlName="jpnsName">
             </td>
-        </tr>
-        <tr>
             <td>
-                <p>出身地</p>
-                <input type="text" formControlName="address">
+                <input type="text" formControlName="prefecture">
+                <div *ngIf="prefecture.invalid" class="error">
+                    出身地は都道府県単位で入力して下さい
+                </div>    
+            </td>
+            <td>
+                <input type="number" formControlName="overAge">以上<br>
+                <input type="number" formControlName="underAge">以下
+            </td>
+            <td>
+                <input type="radio" value="大学院" formControlName="finalEducation">大学院
+                <input type="radio" value="大学" formControlName="finalEducation">大学
+                <input type="radio" value="高専" formControlName="finalEducation">高専
+                <input type="radio" value="高校" formControlName="finalEducation">高校
             </td>
         </tr>
         <tr>
-            <td>
-                <p>年齢</p>
-                <input type="text" formControlName="overAge">以上
-                <input type="text" formControlName="underAge">以下
-            </td>
+            <th>
+                入社年月日（年月日もしくは年のみ）
+            </th>
+            <th>
+                入社歴（年単位）
+            </th>
+            <th>
+                従業員ID
+            </th>
         </tr>
         <tr>
             <td>
-                <p>入社年月日</p>
-                <input type="text" formControlName="joinYear">年
-                <input type="text" formControlName="joinMonth" [disabled]="joinYear.touched">月
-                <input type="text" formControlName="joinDate" disabled="disabled">日
+                <input type="number" formControlName="joinYear">年<br>
+                <input type="number" formControlName="joinMonth">月<br>
+                <input type="number" formControlName="joinDate">日
             </td>
-        </tr>
-        <tr>
             <td>
-                <p>入社歴</p>
-                <input type="text" formControlName="seniority">
+                <input type="number" formControlName="seniority">
             </td>
-        </tr>
-        <tr>
             <td>
-                <p>最終学歴</p>
-                <input type="text" formControlName="finalEducation">
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <p>従業員ID</p>
                 <input type="text" formControlName="employeeId">
             </td>
-        </tr>        
+        </tr>
     </table>
-    <input type="submit" value='検索'>
+    <input type="submit" value='検索' [disabled]="searchForm.invalid">    
 </form>
-    
 
+<h2>検索結果</h2>
 <table>
     <tr>
         <th>

@@ -6,3 +6,6 @@ table, th, td {
 th {
     background-color: lightgrey;
 }
+.error {
+    color: red;
+}

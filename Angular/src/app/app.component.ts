@@ -9,6 +9,7 @@ import {ServerCommunicationService} from './server-communication.service'
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
+  systemName: string = 'あああ'
 
   constructor(
     private router: Router,
@@ -19,7 +20,17 @@ export class AppComponent implements OnInit {
     //マスタデータ読込
     this.service.reqMaster();
     //初期表示
+    this.systemName = 'EMD名簿管理システム';
+    this.router.navigate(['emp-list']);
+  }
+  
+  onEmpSystem() {
+    this.systemName = 'EMD名簿管理システム'
     this.router.navigate(['emp-list']);
   }
 
+  onResSystem() {
+    this.systemName = 'EMD機器貸出管理システム'
+    this.router.navigate(['res-list']);
+  }
 }
