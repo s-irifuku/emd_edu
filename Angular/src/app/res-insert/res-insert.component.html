@@ -1,0 +1,80 @@
+<h2>貸出機器登録</h2>
+
+<form [formGroup]="insForm" (ngSubmit)="onSubmit()">
+    <table>
+        <tr>
+            <td>
+                <p>機器</p>
+                <select formControlName="deviceId">
+                    <option *ngFor="let device of deviceList" [value]="device.id">
+                        {{device.name}}
+                    </option>
+                </select>
+                <div *ngIf="deviceId.invalid" class="error">
+                    機器を選択して下さい
+                </div>
+            </td>
+            <td>
+                <p>OS</p>
+                <select formControlName="osId">
+                    <option *ngFor="let os of osList" [value]="os.id">
+                        {{os.name}}
+                    </option>
+                </select>
+                <div *ngIf="osId.invalid" class="error">
+                    OSを選択して下さい
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>CPU</p>
+                <select formControlName="cpuId">
+                    <option *ngFor="let cpu of cpuList" [value]="cpu.id">
+                        {{cpu.core}}コア
+                    </option>
+                </select>
+                <div *ngIf="cpuId.invalid" class="error">
+                    CPUを選択して下さい
+                </div>
+            </td>
+            <td>
+                <p>メモリー</p>
+                <select formControlName="memoryId">
+                    <option *ngFor="let memory of memoryList" [value]="memory.id">
+                        {{memory.gbyte}}GB
+                    </option>
+                </select>
+                <div *ngIf="memoryId.invalid" class="error">
+                    CPUを選択して下さい
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>ストレージタイプ</p>
+                <select formControlName="storageTypeId">
+                    <option *ngFor="let storageType of storageTypeList" [value]="storageType.id">
+                        {{storageType.name}}
+                    </option>
+                </select>
+                <div *ngIf="storageTypeId.invalid" class="error">
+                    ストレージタイプを選択して下さい
+                </div>
+            </td>
+            <td>
+                <p>ストレージ容量</p>
+                <select formControlName="storageCapacityId">
+                    <option *ngFor="let storageCapacity of storageCapacityList" [value]="storageCapacity.id">
+                        {{storageCapacity.gbyte}}GB
+                    </option>
+                </select>
+                <div *ngIf="storageCapacityId.invalid" class="error">
+                    ストレージ容量を選択して下さい
+                </div>
+            </td>
+        </tr>
+    </table>
+    <input type="button" value="戻る" routerLink="/res-list">
+    <input type="submit" value="登録" [disabled]="insForm.invalid">
+</form>

@@ -9,7 +9,7 @@ import {ServerCommunicationService} from './server-communication.service'
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  systemName: string = 'あああ'
+  systemName: string = ''
 
   constructor(
     private router: Router,

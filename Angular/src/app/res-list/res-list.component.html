@@ -1,1 +1,45 @@
-<p>res-list works!</p>
+<input type="button" value="新規登録" routerLink="/res-insert">
+
+<h2>検索条件</h2>
+
+
+
+<h2>検索結果</h2>
+<table>
+    <tr>
+        <th>
+            貸出機器ID
+        </th>
+        <th>
+            機器スペック
+        </th>
+        <th>
+            貸出履歴（最新）
+        </th>
+        <th>
+            ステータス
+        </th>
+    </tr>
+    <tr *ngFor="let ren of getRentalList()">
+        <td>
+            {{機器ID}}
+        </td>>
+        <td>
+            {{デバイス}}
+            {{OS}}
+            {{CPU}}
+            {{メモリー}}
+            {{StorageType}}
+            {{StorageCapacity}}
+        </td>
+        <td>
+            {{従業員ID}}
+            {{貸出開始日}}
+            {{貸出終了日}}
+        </td>
+        <td>
+            {{計算で求める}}
+        </td>
+    </tr>
+</table>
+

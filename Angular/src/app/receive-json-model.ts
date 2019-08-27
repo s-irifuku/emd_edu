@@ -3,6 +3,12 @@
 export class Master {
   branch_dictionary: {};//支店
   department_dictionary: {};//部署
+  device_dictionary: {};//機器
+  os_dictionary: {};//OS
+  cpu_dictionary: {};//CPU
+  memory_dictionary: {};//メモリー
+  storage_type_dictionary: {};//ストレージタイプ
+  storage_capacity_dictionary: {};//ストレージ容量
 }
 
 // 従業員情報（一覧用）
