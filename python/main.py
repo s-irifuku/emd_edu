@@ -96,6 +96,126 @@ class Department(Base):
             self.department_id\
             , self.department_name\
         )
+#機器
+class Device(Base):
+    __tablename__ = 'Device'
+    device_id = Column(String, primary_key=True)#機器ID
+    device_name = Column(String)#機器名
+    def __repr__(self):
+        return "<Device(\
+            device_id='%s'\
+            , device_name='%s'\
+        >" %(\
+            self.device_id\
+            , self.device_name\
+        )
+#OS
+class OS(Base):
+    __tablename__ = 'OS'
+    os_id = Column(String, primary_key=True)#OSID
+    os_name = Column(String)#OS名
+    def __repr__(self):
+        return "<OS(\
+            os_id='%s'\
+            , os_name='%s'\
+        >" %(\
+            self.os_id\
+            , self.os_name\
+        )
+#CPU
+class CPU(Base):
+    __tablename__ = 'CPU'
+    cpu_id = Column(String, primary_key=True)#CPUID
+    cpu_core = Column(Integer)#CPU名
+    def __repr__(self):
+        return "<CPU(\
+            cpu_id='%s'\
+            , cpu_core='%s'\
+        >" %(\
+            self.cpu_id\
+            , self.cpu_core\
+        )
+#Memory
+class Memory(Base):
+    __tablename__ = 'Memory'
+    memory_id = Column(String, primary_key=True)#メモリーID
+    memory_gbyte = Column(Integer)#メモリーギガバイト
+    def __repr__(self):
+        return "<Memory(\
+            memory_id='%s'\
+            , memory_gbyte='%s'\
+        >" %(\
+            self.memory_id\
+            , self.memory_gbyte\
+        )
+#StorageType
+class StorageType(Base):
+    __tablename__ = 'StorageType'
+    storage_type_id = Column(String, primary_key=True)#StorageTypeID
+    storage_type_name = Column(String)#StorageType名
+    def __repr__(self):
+        return "<StorageType(\
+            storage_type_id='%s'\
+            , storage_type_name='%s'\
+        >" %(\
+            self.storage_type_id\
+            , self.storage_type_name\
+        )
+#StorageCapacity
+class StorageCapacity(Base):
+    __tablename__ = 'StorageCapacity'
+    storage_capacity_id = Column(String, primary_key=True)#StorageCapacityID
+    storage_capacity_gbyte = Column(Integer)#StorageCapacityギガバイト
+    def __repr__(self):
+        return "<StorageCapacity(\
+            storage_capacity_id='%s'\
+            , storage_capacity_gbyte='%s'\
+        >" %(\
+            self.storage_capacity_id\
+            , self.storage_capacity_gbyte\
+        )
+#貸出機器
+class RentalDevice(Base):
+    __tablename__ = 'RentalDevice'
+    rental_device_id = Column(String, primary_key=True)
+    device_id = Column(String)
+    os_id = Column(String)
+    cpu_id = Column(String)
+    memory_id = Column(String)
+    storage_type_id = Column(String)
+    storage_capacity_id = Column(String)
+    delete_flg = Column(String)
+    def __repr__(self):
+        return "<RentalDevice(\
+            rental_device_id='%s'\
+            , device_id='%s'\
+            , os_id='%s'\
+            , cpu_id='%s'\
+            , memory_id='%s'\
+            , storage_type_id='%s'\
+            , storage_capacity_id='%s'\
+            , delete_flg='%s'\
+        >" %(\
+            self.rental_device_id\
+            , self.device_id\
+            , self.os_id\
+            , self.cpu_id\
+            , self.memory_id\
+            , self.storage_type_id\
+            , self.storage_capacity_id\
+            , self.delete_flg\
+        )
+
+
+
+
+
+
+
+
+
+
+
 Base.metadata.create_all(engine)
 #セッションの作成
 Session = sessionmaker(bind=engine)

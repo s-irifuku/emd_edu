@@ -1,7 +1,7 @@
 #v_insert.py
 #coding:UTF-8
 from flask import Flask, request, Blueprint, jsonify, make_response
-from main import session, Employee
+from main import session, Employee, RentalDevice
 from sqlalchemy.sql import func
 from constants import c_branch
 import json, datetime
@@ -48,7 +48,6 @@ def employee_insert():
     session.add(employee)
     session.commit()
     return make_response(jsonify({'res': 'OK'}))
-
 
 #入社年月日の値チェック（月曜日であること）
 def validate_join_date_monday(joinDate):
@@ -101,3 +100,27 @@ def create_employee_id(branchId):
         id = str(max_id[0] + 1)
     return 'emd' + branch_code + id.zfill(10)
 
+@e_insert.route('/api/resource_insert', methods=['POST'])
+def resource_insert():
+    rentalDevice = RentalDevice()
+    rentalDevice.rental_device_id = create_rental_device_id()
+    rentalDevice.device_id = request.json['deviceId']
+    rentalDevice.os_id = request.json['osId']
+    rentalDevice.cpu_id = request.json['cpuId']
+    rentalDevice.memory_id = request.json['memoryId']
+    rentalDevice.storage_type_id = request.json['storageTypeId']
+    rentalDevice.storage_capacity_id = request.json['storageCapacityId']
+    rentalDevice.delete_flg = '0'
+    session.add(rentalDevice)
+    session.commit()
+    return make_response(jsonify({'res': 'OK'}))
+
+#貸出機器IDの作成
+def create_rental_device_id():
+    max_id = session.query(func.max(RentalDevice.rental_device_id).label('max_id')).one()
+    id = 0
+    if max_id[0] is None:
+        id = '1'
+    else:
+        id = str(max_id[0] + 1)
+    return id.zfill(3)
