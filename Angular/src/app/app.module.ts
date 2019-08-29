@@ -11,6 +11,7 @@ import { EmpInsertComponent } from './emp-insert/emp-insert.component';
 import { EmpUpdateComponent } from './emp-update/emp-update.component';
 import { ResListComponent } from './res-list/res-list.component';
 import { ResInsertComponent } from './res-insert/res-insert.component';
+import { ResUpdateComponent } from './res-update/res-update.component';
 
 const routes:Routes = [
   {path: 'emp-list', component: EmpListComponent},
@@ -18,7 +19,8 @@ const routes:Routes = [
   {path: 'emp-insert', component: EmpInsertComponent},
   {path: 'emp-update', component: EmpUpdateComponent},
   {path: 'res-list', component: ResListComponent},
-  {path: 'res-insert', component: ResInsertComponent}
+  {path: 'res-insert', component: ResInsertComponent},
+  {path: 'res-update', component: ResUpdateComponent}
 ];
 
 @NgModule({
@@ -29,7 +31,8 @@ const routes:Routes = [
     EmpInsertComponent,
     EmpUpdateComponent,
     ResListComponent,
-    ResInsertComponent
+    ResInsertComponent,
+    ResUpdateComponent
   ],
   imports: [
     BrowserModule,

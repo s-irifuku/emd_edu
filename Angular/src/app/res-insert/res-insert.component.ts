@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { ServerCommunicationService } from '../server-communication.service';
+import { DisplayItemService } from '../display-item.service';
 
 @Component({
   selector: 'app-res-insert',
@@ -10,16 +11,11 @@ import { ServerCommunicationService } from '../server-communication.service';
 })
 export class ResInsertComponent implements OnInit {
   insForm: FormGroup;
-  deviceList = [];
-  osList = [];
-  cpuList = [];
-  memoryList = [];
-  storageTypeList = [];
-  storageCapacityList = [];
 
   constructor(
     private fb: FormBuilder,
-    private service: ServerCommunicationService
+    private service: ServerCommunicationService,
+    private displayItem: DisplayItemService//消さない事
   ) { }
 
   ngOnInit() {
@@ -30,13 +26,7 @@ export class ResInsertComponent implements OnInit {
       memoryId: ['', [Validators.required]],
       storageTypeId: ['', [Validators.required]],
       storageCapacityId: ['', [Validators.required]]
-    });
-    this.deviceList = this.service.getDisplayDeviceList();
-    this.osList = this.service.getDisplayOSList();
-    this.cpuList = this.service.getDisplayCPUList();
-    this.memoryList = this.service.getDisplayMemoryList();
-    this.storageTypeList = this.service.getDisplayStorageTypeList();
-    this.storageCapacityList = this.service.getDisplayStorageCapacityList();
+    });  
   }
   get deviceId() { return this.insForm.get('deviceId'); }
   get osId() { return this.insForm.get('osId'); }

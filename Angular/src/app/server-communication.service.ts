@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 
 import { Master, EmpList, EmpDetail } from './receive-json-model';
+import { DisplayItemService } from './display-item.service';
 
 const http_options = {
   headers: new HttpHeaders({
@@ -17,7 +18,8 @@ export class ServerCommunicationService {
 
   constructor(
     private client: HttpClient,
-    private router: Router
+    private router: Router,
+    private displayItem: DisplayItemService
   ) {}
 
   //マスタデータ取得
@@ -29,49 +31,20 @@ export class ServerCommunicationService {
     departmentIdList: ''
     , departmentNameList: ''
   }];
-  private DeviceList: {}[] = [{
-    deviceIdList: ''
-    , deviceNameList: ''
-  }];
-  private OSList: {}[] = [{
-    osIdList: ''
-    , osNameList: ''
-  }];
-  private CPUList: {}[] = [{
-    cpuIdList: ''
-    , cpuCoreList: ''
-  }];
-  private MemoryList: {}[] = [{
-    memoryIdList: ''
-    , memoryGbyteList: ''
-  }];
-  private StorageTypeList: {}[] = [{
-    storageTypeIdList: ''
-    , storageTypeNameList: ''
-  }];
-  private StorageCapacityList: {}[] = [{
-    storageCapacityIdList: ''
-    , storageCapacityGbyteList: ''
-  }];
   reqMaster() {
     var sendUrl = '/api/master';
-    this.client.get(sendUrl).subscribe((results: Master) => {
-      this.BranchList['branchIdList'] = results.branch_dictionary['branch_id_list'];
-      this.BranchList['branchNameList'] = results.branch_dictionary['branch_name_list'];
-      this.DepartmentList['departmentIdList'] = results.department_dictionary['department_id_list'];
-      this.DepartmentList['departmentNameList'] = results.department_dictionary['department_name_list'];
-      this.DeviceList['deviceIdList'] = results.device_dictionary['device_id_list'];
-      this.DeviceList['deviceNameList'] = results.device_dictionary['device_name_list'];
-      this.OSList['osIdList'] = results.os_dictionary['os_id_list'];
-      this.OSList['osNameList'] = results.os_dictionary['os_name_list'];
-      this.CPUList['cpuIdList'] = results.cpu_dictionary['cpu_id_list'];
-      this.CPUList['cpuCoreList'] = results.cpu_dictionary['cpu_core_list'];
-      this.MemoryList['memoryIdList'] = results.memory_dictionary['memory_id_list'];
-      this.MemoryList['memoryGbyteList'] = results.memory_dictionary['memory_gbyte_list'];
-      this.StorageTypeList['storageTypeIdList'] = results.storage_type_dictionary['storage_type_id_list'];
-      this.StorageTypeList['storageTypeNameList'] = results.storage_type_dictionary['storage_type_name_list'];
-      this.StorageCapacityList['storageCapacityIdList'] = results.storage_capacity_dictionary['storage_capacity_id_list'];
-      this.StorageCapacityList['storageCapacityGbyteList'] = results.storage_capacity_dictionary['storage_capacity_gbyte_list'];
+    this.client.get(sendUrl).subscribe((result: Master) => {
+      this.BranchList['branchIdList'] = result.branch_dictionary['branch_id_list'];
+      this.BranchList['branchNameList'] = result.branch_dictionary['branch_name_list'];
+      this.DepartmentList['departmentIdList'] = result.department_dictionary['department_id_list'];
+      this.DepartmentList['departmentNameList'] = result.department_dictionary['department_name_list'];
+      
+      this.displayItem.deviceList = result.device_list;
+      this.displayItem.osList = result.os_list;
+      this.displayItem.cpuList = result.cpu_list;
+      this.displayItem.memoryList = result.memory_list;
+      this.displayItem.storageTypeList = result.storage_type_list;
+      this.displayItem.storageCapacityList = result.storage_capacity_list;
     });
   }
   //【表示用】[(支店ID,支店名)]形式で返す
@@ -102,90 +75,7 @@ export class ServerCommunicationService {
     }
     return displayDepartmentList;
   }
-  //【表示用】[(機器ID,機器名)]形式で返す
-  getDisplayDeviceList() {
-    var displayDeviceList: {}[] = [{
-      id: ''
-      , name: ''
-    }];
-    for(let index in this.DeviceList['deviceIdList']) {
-      displayDeviceList[index] = {
-        id: this.DeviceList['deviceIdList'][index],
-        name: this.DeviceList['deviceNameList'][index]
-      };
-    }
-    return displayDeviceList;
-  }
-  //【表示用】[(OSID,OS名)]形式で返す
-  getDisplayOSList() {
-    var displayOSList: {}[] = [{
-      id: ''
-      , name: ''
-    }];
-    for(let index in this.OSList['osIdList']) {
-      displayOSList[index] = {
-        id: this.OSList['osIdList'][index],
-        name: this.OSList['osNameList'][index]
-      };
-    }
-    return displayOSList;
-  }
-  //【表示用】[(CPUID,CPUコア)]形式で返す
-  getDisplayCPUList() {
-    var displayCPUList: {}[] = [{
-      id: ''
-      , core: ''
-    }];
-    for(let index in this.CPUList['cpuIdList']) {
-      displayCPUList[index] = {
-        id: this.CPUList['cpuIdList'][index],
-        core: this.CPUList['cpuCoreList'][index]
-      };
-    }
-    return displayCPUList;
-  }
-  //【表示用】[(メモリーID,メモリー名)]形式で返す
-  getDisplayMemoryList() {
-    var displayMemoryList: {}[] = [{
-      id: ''
-      , gbyte: ''
-    }];
-    for(let index in this.MemoryList['memoryIdList']) {
-      displayMemoryList[index] = {
-        id: this.MemoryList['memoryIdList'][index],
-        gbyte: this.MemoryList['memoryGbyteList'][index]
-      };
-    }
-    return displayMemoryList;
-  }
-  //【表示用】[(ストレージタイプID,ストレージタイプ名)]形式で返す
-  getDisplayStorageTypeList() {
-    var displayStorageTypeList: {}[] = [{
-      id: ''
-      , name: ''
-    }];
-    for(let index in this.StorageTypeList['storageTypeIdList']) {
-      displayStorageTypeList[index] = {
-        id: this.StorageTypeList['storageTypeIdList'][index],
-        name: this.StorageTypeList['storageTypeNameList'][index]
-      };
-    }
-    return displayStorageTypeList;
-  }
-  //【表示用】[(ストレージ容量ID,ストレージ容量ギガ)]形式で返す
-  getDisplayStorageCapacityList() {
-    var displayStorageCapacityList: {}[] = [{
-      id: ''
-      , gbyte: ''
-    }];
-    for(let index in this.StorageCapacityList['storageCapacityIdList']) {
-      displayStorageCapacityList[index] = {
-        id: this.StorageCapacityList['storageCapacityIdList'][index],
-        gbyte: this.StorageCapacityList['storageCapacityGbyteList'][index]
-      };
-    }
-    return displayStorageCapacityList;
-  }
+
   // 従業員情報取得（一覧）
   private displayEmpList: {}[] = [{
     id: ''
@@ -296,32 +186,28 @@ export class ServerCommunicationService {
 
 
 
+  // 貸出情報取得（一覧）
+  reqResList() {
+    var sendUrl = '/api/resource_list';
+    this.client.get(sendUrl).subscribe((results) => {
+      for(let index in results['rental_device_id_list']) {
+        this.displayItem.rentalInfoList[index] = {
+          rental_device_id: results['rental_device_id_list'][index]
+          , device_id: results['device_id_list'][index]
+          , os_id: results['os_id_list'][index]
+          , cpu_id: results['cpu_id_list'][index]
+          , memory_id: results['memory_id_list'][index]
+          , storage_type_id: results['storage_type_id_list'][index]
+          , storage_capacity_id: results['storage_capacity_id_list'][index]
+          , employee_id: results['employee_id_list'][index]
+          , rental_start_date: results['rental_start_date_list'][index]
+          , rental_end_date: results['rental_end_date_list'][index]
+        };
+      }
+    });
+  }
 
-
-
-  // 機器情報取得（一覧）
-  //private displayResList: {}[] = [{
-  //  id: ''
-  //  , name: ''
-  //  , date: ''
-  //}];
-  //reqResList() {
-  //  var sendUrl = '/api/resource_list';
-  //  this.client.get(sendUrl).subscribe((results: ResList) => {
-  //    for(let index in results.idList) {
-  //      this.displayResList[index] = {
-  //        id: results.idList[index]
-  //        , name: results.nameList[index]
-  //        , date: results.dateList[index]
-  //      };
-  //    }
-  //  });
-  //}
-  //getResList() {
-  //  return this.displayResList;
-  //}
-
-  // 機器情報追加
+  // 貸出機器追加
   reqResInsert(insForm) {
     let sendUrl = '/api/resource_insert';
     let body = JSON.stringify(insForm.value);
@@ -332,6 +218,28 @@ export class ServerCommunicationService {
           this.router.navigate(['/res-list']);
           break;
       }
+    });
+  }
+
+  // 貸出機器更新
+  reqResUpdate(updForm) {
+    let sendUrl = '/api/resource_update';
+    let body = JSON.stringify(updForm.value);
+    this.client.post(sendUrl, body, http_options).subscribe((result) => {
+      switch (result['res']) {
+        case 'OK':
+          this.reqResList();
+          this.router.navigate(['/res-list']);
+      }
+    });
+
+  }
+
+  // 貸出機器削除（論理削除）
+  reqResDelete(rentalDeviceId) {
+    let sendUrl = '/api/resource_delete/' + rentalDeviceId;
+    this.client.delete(sendUrl, http_options).subscribe(() => {
+      console.log('削除完了');
     });
   }
 }

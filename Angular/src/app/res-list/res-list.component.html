@@ -7,39 +7,52 @@
 <h2>検索結果</h2>
 <table>
     <tr>
-        <th>
-            貸出機器ID
+        <th rowspan="2">
+            機器ID
         </th>
-        <th>
-            機器スペック
+        <th colspan="6">
+            貸出機器情報
         </th>
-        <th>
-            貸出履歴（最新）
+        <th colspan="3">
+            貸出履歴情報（最新）
         </th>
-        <th>
+        <th rowspan="2">
             ステータス
         </th>
+        <th rowspan="2">
+            変更
+        </th>
+        <th rowspan="2">
+            削除
+        </th>
+
     </tr>
-    <tr *ngFor="let ren of getRentalList()">
-        <td>
-            {{機器ID}}
-        </td>>
-        <td>
-            {{デバイス}}
-            {{OS}}
-            {{CPU}}
-            {{メモリー}}
-            {{StorageType}}
-            {{StorageCapacity}}
-        </td>
-        <td>
-            {{従業員ID}}
-            {{貸出開始日}}
-            {{貸出終了日}}
-        </td>
-        <td>
-            {{計算で求める}}
-        </td>
+    <tr>
+        <th>機器</th>
+        <th>OS</th>
+        <th>CPU</th>
+        <th>メモリ</th>
+        <th>タイプ</th>
+        <th>容量</th>
+        <th>従業員ID</th>
+        <th>貸出開始日</th>
+        <th>貸出終了日</th>        
+    </tr>
+
+    <tr *ngFor="let rentalInfo of displayItem.rentalInfoList">
+        <td>{{ rentalInfo.rental_device_id }}</td>
+        <td>{{ displayItem.convertIdToName(rentalInfo.device_id, "Device") }}</td>
+        <td>{{ displayItem.convertIdToName(rentalInfo.os_id, "OS") }}</td>
+        <td>{{ displayItem.convertIdToName(rentalInfo.cpu_id, "CPU") }}コア</td>
+        <td>{{ displayItem.convertIdToName(rentalInfo.memory_id, "Memory") }}GB</td>
+        <td>{{ displayItem.convertIdToName(rentalInfo.storage_type_id, "StorageType") }}</td>
+        <td>{{ displayItem.convertIdToName(rentalInfo.storage_capacity_id, "StorageCapacity") }}GB</td>
+        <td>{{ rentalInfo.employee_id }}</td>
+        <td>{{ rentalInfo.rental_start_date }}</td>
+        <td>{{ rentalInfo.rental_end_date }}</td>
+        <td>{{ checkStatus(rentalInfo.rental_start_date, rentalInfo.rental_end_date) }}</td>
+        <td><input type="button" value="編集" (click)="goUpdate(rentalInfo)"></td>
+        <td><input type="button" value="削除" (click)="goDelete(rentalInfo.rental_device_id)"></td>
     </tr>
 </table>
 
