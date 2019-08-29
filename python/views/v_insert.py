@@ -100,7 +100,8 @@ def create_employee_id(branchId):
         id = str(max_id[0] + 1)
     return 'emd' + branch_code + id.zfill(10)
 
-@e_insert.route('/api/resource_insert', methods=['POST'])
+r_insert = Blueprint('r_insert', __name__)
+@r_insert.route('/api/resource_insert', methods=['POST'])
 def resource_insert():
     rentalDevice = RentalDevice()
     rentalDevice.rental_device_id = create_rental_device_id()

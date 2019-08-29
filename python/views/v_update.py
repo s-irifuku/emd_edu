@@ -1,7 +1,7 @@
 #v_update.py
 #coding:UTF-8
 from flask import Flask, request, Blueprint, jsonify, make_response
-from main import session, Employee
+from main import session, Employee, RentalDevice
 from constants import c_branch
 import json, datetime
 
@@ -66,3 +66,18 @@ def validate_company_mail_address(companyMailAddress, branchId):
         branch_domain_error_msg = '自社メールアドレスは、選択した支社に対応するドメインにして下さい'
     return branch_domain_error_msg
 
+#更新
+r_update = Blueprint('r_update', __name__)
+@r_update.route('/api/resource_update', methods=['POST'])
+def resource_update():
+    #ここから更新処理
+    update_res = session.query(RentalDevice).filter(RentalDevice.rental_device_id == request.json['rentalDeviceId']).first()
+    update_res.device_id = request.json['deviceId']
+    update_res.os_id = request.json['osId']
+    update_res.cpu_id = request.json['cpuId']
+    update_res.memory_id = request.json['memoryId']
+    update_res.storage_type_id = request.json['storageTypeId']
+    update_res.storage_capacity_id = request.json['storageCapacityId']
+    session.commit()
+    session.close()
+    return make_response(jsonify({'res': 'OK'}))

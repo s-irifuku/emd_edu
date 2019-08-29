@@ -1,8 +1,8 @@
 #v_list.py
 #coding:UTF-8
 from flask import Flask, request, Blueprint, jsonify, make_response
-from main import session, Employee
-from sqlalchemy import and_
+from main import session, Employee, RentalDevice, RentalHistory
+from sqlalchemy.sql import text 
 from datetime import date
 from views import v_detail
 import json
@@ -77,3 +77,51 @@ def employee_search():
             }
         }
         return make_response(jsonify(res))
+
+#貸出情報表示
+r_list = Blueprint('r_list', __name__)
+@r_list.route('/api/resource_list', methods=["GET"])
+def resource_list():
+    rental_device_id_list = []
+    device_id_list = []
+    os_id_list = []
+    cpu_id_list = []
+    memory_id_list = []
+    storage_type_id_list = []
+    storage_capacity_id_list = []
+    employee_id_list = []
+    rental_start_date_list = []
+    rental_end_date_list = []
+    sql = text("SELECT * FROM RentalDevice rd LEFT JOIN RentalHistory rh ON rd.rental_device_id = rh.rental_device_id \
+        WHERE rh.rental_history_id IN ( SELECT max(rh.rental_history_id) FROM RentalDevice rd LEFT JOIN RentalHistory rh \
+        ON rd.rental_device_id = rh.rental_device_id WHERE rd.delete_flg = '0' GROUP BY rd.rental_device_id);")
+    for res in session.execute(sql):
+        rental_device_id_list.append(res['rental_device_id'])
+        device_id_list.append(res['device_id'])
+        os_id_list.append(res['os_id'])
+        cpu_id_list.append(res['cpu_id'])
+        memory_id_list.append(res['memory_id'])
+        storage_type_id_list.append(res['storage_type_id'])
+        storage_capacity_id_list.append(res['storage_capacity_id'])
+        employee_id_list.append(res['employee_id'])
+        if res['rental_start_date'] == None:
+            rental_start_date_list.append(None)
+        else:
+            rental_start_date_list.append(res['rental_start_date'].strftime('%Y年%m月%d日'))
+        if res['rental_end_date'] == None:
+            rental_end_date_list.append(None)
+        else:
+            rental_end_date_list.append(res['rental_end_date'].strftime('%Y年%m月%d日'))
+    resList = {
+        "rental_device_id_list": rental_device_id_list
+        , "device_id_list": device_id_list
+        , "os_id_list": os_id_list
+        , "cpu_id_list": cpu_id_list
+        , "memory_id_list": memory_id_list
+        , "storage_type_id_list": storage_type_id_list
+        , "storage_capacity_id_list": storage_capacity_id_list
+        , "employee_id_list": employee_id_list
+        , "rental_start_date_list": rental_start_date_list
+        , "rental_end_date_list": rental_end_date_list
+    }
+    return jsonify(resList)

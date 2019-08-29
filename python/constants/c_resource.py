@@ -2,56 +2,42 @@
 #coding:UTF-8
 from main import session, Device, OS, CPU, Memory, StorageType, StorageCapacity
 
-#{id_list:[機器ID], name_list:[機器名]}形式の辞書を返す
-def get_device_of_dictionary():
-    id_list = []
-    name_list = []
+#[(機器ID, 機器名)]を返す
+def load_device():
+    device_list = []
     for (id, name) in session.query(Device.device_id, Device.device_name):
-        id_list.append(id)
-        name_list.append(name)
-    return {'id_list': id_list, 'name_list': name_list}
-#{id_list:[OSID], name_list:[OS名]}形式の辞書を返す
-def get_os_of_dictionary():
-    id_list = []
-    name_list = []
+        device_list.append({'id': id, 'name': name})
+    return device_list
+#[(OSID, OS名)]を返す
+def load_os():
+    os_list = []
     for (id, name) in session.query(OS.os_id, OS.os_name):
-        id_list.append(id)
-        name_list.append(name)
-    return {'id_list': id_list, 'name_list': name_list}
-#{id_list:[CPUID], core_list:[CPUコア]}形式の辞書を返す
-def get_cpu_of_dictionary():
-    id_list = []
-    core_list = []
+        os_list.append({'id': id, 'name': name})
+    return os_list
+#[(CPUID, CPUコア)]を返す
+def load_cpu():
+    cpu_list = []
     for (id, core) in session.query(CPU.cpu_id, CPU.cpu_core):
-        id_list.append(id)
-        core_list.append(core)
-    return {'id_list': id_list, 'core_list': core_list}
-#{id_list:[メモリーID], gbyte_list:[メモリーギガ]}形式の辞書を返す
-def get_memory_of_dictionary():
-    id_list = []
-    gbyte_list = []
+        cpu_list.append({'id': id, 'core': core})
+    return cpu_list
+#[(メモリーID, メモリーギガ)]を返す
+def load_memory():
+    memory_list = []
     for (id, gbyte) in session.query(Memory.memory_id, Memory.memory_gbyte):
-        id_list.append(id)
-        gbyte_list.append(gbyte)
-    return {'id_list': id_list, 'gbyte_list': gbyte_list}
-#{id_list:[ストレージタイプID], name_list:[ストレージタイプ名]}形式の辞書を返す
-def get_storage_type_of_dictionary():
-    id_list = []
-    name_list = []
+        memory_list.append({'id': id, 'gbyte': gbyte})
+    return memory_list
+#[(ストレージタイプID, ストレージタイプ名)]を返す
+def load_storage_type():
+    storage_type_list = []
     for (id, name) in session.query(StorageType.storage_type_id, StorageType.storage_type_name):
-        id_list.append(id)
-        name_list.append(name)
-    return {'id_list': id_list, 'name_list': name_list}
-#{id_list:[ストレージ容量ID], gbyte_list:[ストレージ容量ギガ]}形式の辞書を返す
-def get_storage_capacity_of_dictionary():
-    id_list = []
-    gbyte_list = []
+        storage_type_list.append({'id': id, 'name': name})
+    return storage_type_list
+#[(ストレージ容量ID, ストレージ容量ギガ)]を返す
+def load_storage_capacity():
+    storage_capacity_list = []
     for (id, gbyte) in session.query(StorageCapacity.storage_capacity_id, StorageCapacity.storage_capacity_gbyte):
-        id_list.append(id)
-        gbyte_list.append(gbyte)
-    return {'id_list': id_list, 'gbyte_list': gbyte_list}
-
-
+        storage_capacity_list.append({'id': id, 'gbyte': gbyte})
+    return storage_capacity_list
 
 
 
