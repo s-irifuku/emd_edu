@@ -211,8 +211,8 @@ class RentalHistory(Base):
     rental_history_id = Column(Integer, primary_key=True)
     rental_device_id = Column(String)
     employee_id = Column(String)
-    rental_start_date = Column(Date)
-    rental_end_date = Column(Date)
+    rental_start_date = Column(String)
+    rental_end_date = Column(String)
     def __repr__(self):
         return "<RentalHistory(\
             rental_history_id='%s'\
@@ -225,7 +225,7 @@ class RentalHistory(Base):
             , self.rental_device_id\
             , self.employee_id\
             , self.rental_start_date\
-            , self.rantal_end_date\
+            , self.rental_end_date\
         )
 
 
@@ -249,7 +249,8 @@ if __name__ == '__main__':
     app.config['JSON_AS_ASCII'] = False
     #コントローラー?view?
     from views import v_master, v_list, v_detail, v_insert, v_update, v_delete
-    app.register_blueprint(v_master.e_master)#マスタ情報
+    app.register_blueprint(v_master.v_master)#マスタ情報
+    
     app.register_blueprint(v_list.e_list)#一覧表示
     app.register_blueprint(v_detail.e_detail)#詳細表示    
     app.register_blueprint(v_insert.e_insert)#新規登録
@@ -257,7 +258,7 @@ if __name__ == '__main__':
     app.register_blueprint(v_delete.e_delete)#削除
     app.register_blueprint(v_list.r_list)#一覧表示
     app.register_blueprint(v_insert.r_insert)#新規登録
-    app.register_blueprint(v_list.r_delete)#一覧表示
+    app.register_blueprint(v_delete.r_delete)#一覧表示
     app.register_blueprint(v_update.r_update)#更新
     #webサーバー立ち上げ
     app.run(debug=True, host='0.0.0.0', port=8080)

@@ -1,6 +1,6 @@
 #v_delete.py
 #coding:UTF-8
-from flask import Flask, Blueprint
+from flask import Flask, Blueprint, jsonify, make_response
 from main import session, Employee, RentalDevice
 
 #削除
@@ -14,10 +14,10 @@ def employee_delete(id):
 
 #論理削除
 r_delete = Blueprint('r_delete', __name__)
-@r_delete.route('/api/resource_delete/<id>', methods=['DELETE'])
+@r_delete.route('/api/resource_delete/<id>', methods=['POST'])
 def resource_delete(id):    
-    logic_delete_res = session.query(RentalDevice).filter(RentalDevice.rental_device_id == id).first()
-    logic_delete_res.delete_flg = '1'
+    delete_res = session.query(RentalDevice).filter(RentalDevice.rental_device_id == id).first()
+    delete_res.delete_flg = '1'
     session.commit()
     session.close()
     return ''

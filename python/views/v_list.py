@@ -3,7 +3,6 @@
 from flask import Flask, request, Blueprint, jsonify, make_response
 from main import session, Employee, RentalDevice, RentalHistory
 from sqlalchemy.sql import text 
-from datetime import date
 from views import v_detail
 import json
 
@@ -90,11 +89,14 @@ def resource_list():
     storage_type_id_list = []
     storage_capacity_id_list = []
     employee_id_list = []
+    jpns_name_list = []
     rental_start_date_list = []
     rental_end_date_list = []
-    sql = text("SELECT * FROM RentalDevice rd LEFT JOIN RentalHistory rh ON rd.rental_device_id = rh.rental_device_id \
-        WHERE rh.rental_history_id IN ( SELECT max(rh.rental_history_id) FROM RentalDevice rd LEFT JOIN RentalHistory rh \
-        ON rd.rental_device_id = rh.rental_device_id WHERE rd.delete_flg = '0' GROUP BY rd.rental_device_id);")
+    sql = text("SELECT rd.rental_device_id, rd.device_id, rd.os_id, rd.cpu_id, rd.memory_id, rd.storage_type_id, \
+        rd.storage_capacity_id, rh.rental_start_date, rh.rental_end_date, rh.employee_id, emp.jpns_name FROM \
+        RentalDevice rd LEFT JOIN RentalHistory rh ON rd.rental_device_id = rh.rental_device_id AND rh.rental_history_id \
+        IN ( SELECT max(rh.rental_history_id) maxId FROM RentalDevice rd LEFT JOIN RentalHistory rh ON rd.rental_device_id = rh.rental_device_id \
+        GROUP BY rd.rental_device_id ) LEFT JOIN Employee emp ON rh.employee_id = emp.employee_id WHERE rd.delete_flg = '0';")
     for res in session.execute(sql):
         rental_device_id_list.append(res['rental_device_id'])
         device_id_list.append(res['device_id'])
@@ -104,14 +106,9 @@ def resource_list():
         storage_type_id_list.append(res['storage_type_id'])
         storage_capacity_id_list.append(res['storage_capacity_id'])
         employee_id_list.append(res['employee_id'])
-        if res['rental_start_date'] == None:
-            rental_start_date_list.append(None)
-        else:
-            rental_start_date_list.append(res['rental_start_date'].strftime('%Y年%m月%d日'))
-        if res['rental_end_date'] == None:
-            rental_end_date_list.append(None)
-        else:
-            rental_end_date_list.append(res['rental_end_date'].strftime('%Y年%m月%d日'))
+        jpns_name_list.append(res['jpns_name'])
+        rental_start_date_list.append(res['rental_start_date'])
+        rental_end_date_list.append(res['rental_end_date'])
     resList = {
         "rental_device_id_list": rental_device_id_list
         , "device_id_list": device_id_list
@@ -121,7 +118,101 @@ def resource_list():
         , "storage_type_id_list": storage_type_id_list
         , "storage_capacity_id_list": storage_capacity_id_list
         , "employee_id_list": employee_id_list
+        , "jpns_name_list": jpns_name_list
         , "rental_start_date_list": rental_start_date_list
         , "rental_end_date_list": rental_end_date_list
     }
     return jsonify(resList)
+
+@r_list.route('/api/resource_search', methods=["POST"])
+def resource_search():
+    #格納
+    rental_device_id_list = []
+    device_id_list = []
+    os_id_list = []
+    cpu_id_list = []
+    memory_id_list = []
+    storage_type_id_list = []
+    storage_capacity_id_list = []
+    employee_id_list = []
+    jpns_name_list = []
+    rental_start_date_list = []
+    rental_end_date_list = []
+    sql = text("SELECT rd.rental_device_id, rd.device_id, rd.os_id, rd.cpu_id, rd.memory_id, rd.storage_type_id, \
+        rd.storage_capacity_id, rh.rental_start_date, rh.rental_end_date, rh.employee_id, emp.jpns_name FROM \
+        RentalDevice rd LEFT JOIN RentalHistory rh ON rd.rental_device_id = rh.rental_device_id AND rh.rental_history_id \
+        IN ( SELECT max(rh.rental_history_id) maxId FROM RentalDevice rd LEFT JOIN RentalHistory rh ON rd.rental_device_id = rh.rental_device_id \
+        GROUP BY rd.rental_device_id ) LEFT JOIN Employee emp ON rh.employee_id = emp.employee_id WHERE rd.delete_flg = '0';")
+    for res in session.execute(sql):
+        # 検索値と等しいかチェック
+        if compareSearchValue(res):
+            rental_device_id_list.append(res['rental_device_id'])
+            device_id_list.append(res['device_id'])
+            os_id_list.append(res['os_id'])
+            cpu_id_list.append(res['cpu_id'])
+            memory_id_list.append(res['memory_id'])
+            storage_type_id_list.append(res['storage_type_id'])
+            storage_capacity_id_list.append(res['storage_capacity_id'])
+            employee_id_list.append(res['employee_id'])
+            jpns_name_list.append(res['jpns_name'])
+            rental_start_date_list.append(res['rental_start_date'])
+            rental_end_date_list.append(res['rental_end_date'])
+    searchList = {
+        "rental_device_id_list": rental_device_id_list
+        , "device_id_list": device_id_list
+        , "os_id_list": os_id_list
+        , "cpu_id_list": cpu_id_list
+        , "memory_id_list": memory_id_list
+        , "storage_type_id_list": storage_type_id_list
+        , "storage_capacity_id_list": storage_capacity_id_list
+        , "employee_id_list": employee_id_list
+        , "jpns_name_list": jpns_name_list
+        , "rental_start_date_list": rental_start_date_list
+        , "rental_end_date_list": rental_end_date_list
+    }
+    return jsonify(searchList)
+
+
+def compareSearchValue(res):
+    result = True
+    #機器
+    deviceId = request.json['deviceId']
+    if (deviceId != '' and deviceId != res['device_id']):
+        result = False
+    print(result)
+    #OS
+    osId = request.json['osId']
+    if (osId != '' and osId != res['os_id']):
+        result = False
+    print(result)
+    #CPU
+    cpuId = request.json['cpuId']
+    if (cpuId != '' and cpuId != res['cpu_id']):
+        result = False
+    print(result)
+    #メモリー
+    memoryId = request.json['memoryId']
+    if (memoryId != '' and memoryId != res['memory_id']):
+        result = False
+    print(result)
+    #ストレージタイプ
+    storageTypeId = request.json['storageTypeId']
+    if (storageTypeId != '' and storageTypeId != res['storage_type_id']):
+        result = False
+    print(result)
+    #ストレージ容量
+    storageCapacityId = request.json['storageCapacityId']
+    if (storageCapacityId != '' and storageCapacityId != res['storage_capacity_id']):
+        result = False
+    print(result)
+    #従業員ID
+    employeeId = request.json['employeeId']
+    if (employeeId != '' and employeeId != res['employee_id']):
+        result = False
+    print(result)
+    #従業員名
+    jpnsName = request.json['jpnsName']
+    if (jpnsName != '' and jpnsName != res['jpns_name']):
+        result = False
+    print(result)
+    return result

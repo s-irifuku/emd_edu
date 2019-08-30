@@ -1,7 +1,8 @@
 #v_update.py
 #coding:UTF-8
 from flask import Flask, request, Blueprint, jsonify, make_response
-from main import session, Employee, RentalDevice
+from main import session, Employee, RentalDevice, RentalHistory
+from sqlalchemy.sql import text, bindparam
 from constants import c_branch
 import json, datetime
 
@@ -68,16 +69,34 @@ def validate_company_mail_address(companyMailAddress, branchId):
 
 #更新
 r_update = Blueprint('r_update', __name__)
-@r_update.route('/api/resource_update', methods=['POST'])
-def resource_update():
+@r_update.route('/api/resource_update/<id>', methods=['POST'])
+def resource_update(id):
     #ここから更新処理
-    update_res = session.query(RentalDevice).filter(RentalDevice.rental_device_id == request.json['rentalDeviceId']).first()
+    update_res = session.query(RentalDevice).filter(RentalDevice.rental_device_id == id).first()
     update_res.device_id = request.json['deviceId']
     update_res.os_id = request.json['osId']
     update_res.cpu_id = request.json['cpuId']
     update_res.memory_id = request.json['memoryId']
     update_res.storage_type_id = request.json['storageTypeId']
     update_res.storage_capacity_id = request.json['storageCapacityId']
+    session.commit()
+    session.close()
+    return make_response(jsonify({'res': 'OK'}))
+
+#返却
+@r_update.route('/api/resource_return', methods=['POST'])
+def resource_return():
+
+    #更新対象レコードの貸出履歴ID（主キー）を取得する。
+    sql = text("SELECT max(rh.rental_history_id) maxRhId FROM RentalHistory rh WHERE rh.rental_device_id = :rentalDeviceId;")
+    sql = sql.bindparams(bindparam("rentalDeviceId", request.json['rentalDeviceId']))
+    rentalHistoryId = session.execute(sql).fetchone()[0]
+    print(rentalHistoryId)
+
+
+    update_history = session.query(RentalHistory).filter(RentalHistory.rental_history_id == rentalHistoryId).first()
+    print(update_history)
+    update_history.rental_end_date = request.json['rentalEndDate']
     session.commit()
     session.close()
     return make_response(jsonify({'res': 'OK'}))

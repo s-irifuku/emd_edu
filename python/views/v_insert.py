@@ -1,10 +1,11 @@
 #v_insert.py
 #coding:UTF-8
 from flask import Flask, request, Blueprint, jsonify, make_response
-from main import session, Employee, RentalDevice
-from sqlalchemy.sql import func
+from main import session, Employee, RentalDevice, RentalHistory
+from sqlalchemy.sql import func, text
 from constants import c_branch
 import json, datetime
+from dateutil.relativedelta import relativedelta
 
 #新規登録
 e_insert = Blueprint('e_insert', __name__)
@@ -124,4 +125,90 @@ def create_rental_device_id():
         id = '1'
     else:
         id = str(max_id[0] + 1)
-    return id.zfill(3)
+    return id
+
+#貸出申請
+@r_insert.route('/api/resource_apply', methods=['POST'])
+def resource_apply():
+    #割当可能な機器が存在するか判定
+    assignDeviceId = assign_device_id()
+    #割当可能な機器が存在しない場合
+    if assignDeviceId == '':
+        return make_response(jsonify({'res': 'NG'}))
+    rentalHistory = RentalHistory()
+    rentalHistory.rental_history_id = create_rental_history_id()
+    rentalHistory.rental_device_id = assignDeviceId
+    rentalHistory.employee_id = request.json['employeeId']
+    rentalHistory.rental_start_date = request.json['rentalStartDate']
+    session.add(rentalHistory)
+    session.commit()
+    return make_response(jsonify({'res': 'OK', 'rentalDeviceId': assignDeviceId}))
+
+#貸出履歴IDの作成
+def create_rental_history_id():
+    max_id = session.query(func.max(RentalHistory.rental_history_id).label('max_id')).one()
+    id = 0
+    if max_id[0] is None:
+        id = '1'
+    else:
+        id = str(max_id[0] + 1)
+    return id
+
+#機器を割当てる
+def assign_device_id():
+    assignDeviceId = ''
+    sql = text("SELECT rd.rental_device_id, rh.rental_start_date, rh.rental_end_date FROM \
+        RentalDevice rd LEFT JOIN RentalHistory rh ON rd.rental_device_id = rh.rental_device_id AND rh.rental_history_id \
+        IN ( SELECT max(rh.rental_history_id) maxId FROM RentalDevice rd LEFT JOIN RentalHistory rh ON rd.rental_device_id = rh.rental_device_id \
+        GROUP BY rd.rental_device_id ) LEFT JOIN Employee emp ON rh.employee_id = emp.employee_id WHERE rd.delete_flg = '0';")
+    for res in session.execute(sql):
+        if compareApplyValue(res) and compareRentalDate(res):
+            assignDeviceId = res['rental_device_id']
+            return assignDeviceId
+    return assignDeviceId
+
+def compareApplyValue(res):
+    result = True
+    #機器
+    deviceId = request.json['deviceId']
+    if (deviceId != '' and deviceId != res['device_id']):
+        result = False
+    #OS
+    osId = request.json['osId']
+    if (osId != '' and osId != res['os_id']):
+        result = False
+    #CPU
+    cpuId = request.json['cpuId']
+    if (cpuId != '' and cpuId != res['cpu_id']):
+        result = False
+    #メモリー
+    memoryId = request.json['memoryId']
+    if (memoryId != '' and memoryId != res['memory_id']):
+        result = False
+    #ストレージタイプ
+    storageTypeId = request.json['storageTypeId']
+    if (storageTypeId != '' and storageTypeId != res['storage_type_id']):
+        result = False
+    #ストレージ容量
+    storageCapacityId = request.json['storageCapacityId']
+    if (storageCapacityId != '' and storageCapacityId != res['storage_capacity_id']):
+        result = False
+    return result
+
+def compareRentalDate(res):
+    #貸出開始日が存在しない場合
+    if res['rental_start_date'] == None:
+        return True
+    #貸出終了日が存在しない場合
+    if res['rental_end_date'] == None:
+        return False
+    #冷却期間であるか判定
+    rentalEndDate = str(res['rental_end_date'])
+    coolLimitDate = datetime.datetime.strptime(rentalEndDate, '%Y/%m/%d')
+    coolLimitDate = coolLimitDate + relativedelta(months=1)
+    toDate = datetime.datetime.today()
+    if coolLimitDate < toDate:
+        return True
+    return False
+
+    
