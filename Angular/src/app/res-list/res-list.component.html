@@ -1,31 +1,102 @@
 <input type="button" value="新規登録" routerLink="/res-insert">
 
 <h2>検索条件</h2>
-
+<form [formGroup]="searchForm" (ngSubmit)="goSearch()">
+    <table>
+        <tr>
+            <th colspan="6">
+                機器情報
+            </th>
+            <th colspan="2">
+                従業員情報
+            </th>
+        </tr>
+        <tr>
+            <th>機器</th>
+            <th>OS</th>
+            <th>CPU</th>
+            <th>メモリ</th>
+            <th>タイプ</th>
+            <th>容量</th>
+            <th>従業員ID</th>
+            <th>従業員名</th>
+        </tr>
+        <tr>
+            <td>
+                <select formControlName="deviceId">
+                    <option></option>
+                    <option *ngFor="let device of itemService.deviceList" [value]="device.id">
+                        {{device.name}}
+                    </option>
+                </select>
+            </td>
+            <td>
+                <select formControlName="osId">
+                    <option></option>
+                    <option *ngFor="let os of itemService.osList" [value]="os.id">
+                        {{os.name}}
+                    </option>
+                </select>
+            </td>
+            <td>
+                <select formControlName="cpuId">
+                    <option></option>
+                    <option *ngFor="let cpu of itemService.cpuList" [value]="cpu.id">
+                        {{cpu.core}}コア
+                    </option>
+                </select>
+            </td>
+            <td>
+                <select formControlName="memoryId">
+                    <option></option>
+                    <option *ngFor="let memory of itemService.memoryList" [value]="memory.id">
+                        {{memory.gbyte}}GB
+                    </option>
+                </select>
+            </td>
+            <td>
+                <select formControlName="storageTypeId">
+                    <option></option>
+                    <option *ngFor="let storageType of itemService.storageTypeList" [value]="storageType.id">
+                        {{storageType.name}}
+                    </option>
+                </select>
+            </td>
+            <td>
+                <select formControlName="storageCapacityId">
+                    <option></option>
+                    <option *ngFor="let storageCapacity of itemService.storageCapacityList" [value]="storageCapacity.id">
+                        {{storageCapacity.gbyte}}GB
+                    </option>
+                </select>
+            </td>
+            <td>
+                <input type="text" formControlName="employeeId">
+            </td>
+            <td>
+                <input type="text" formControlName="jpnsName">
+            </td>
+        </tr>
+    </table>
+    <input type="submit" value="検索">
+</form>
 
 
 <h2>検索結果</h2>
 <table>
     <tr>
+        <th colspan="6">
+            機器情報
+        </th>
+        <th colspan="4">
+            貸出履歴（最新）
+        </th>
         <th rowspan="2">
             機器ID
         </th>
-        <th colspan="6">
-            貸出機器情報
-        </th>
-        <th colspan="3">
-            貸出履歴情報（最新）
-        </th>
-        <th rowspan="2">
+        <th rowspan="2" colspan="3">
             ステータス
         </th>
-        <th rowspan="2">
-            変更
-        </th>
-        <th rowspan="2">
-            削除
-        </th>
-
     </tr>
     <tr>
         <th>機器</th>
@@ -35,24 +106,132 @@
         <th>タイプ</th>
         <th>容量</th>
         <th>従業員ID</th>
+        <th>従業員名</th>
         <th>貸出開始日</th>
         <th>貸出終了日</th>        
     </tr>
 
-    <tr *ngFor="let rentalInfo of displayItem.rentalInfoList">
-        <td>{{ rentalInfo.rental_device_id }}</td>
-        <td>{{ displayItem.convertIdToName(rentalInfo.device_id, "Device") }}</td>
-        <td>{{ displayItem.convertIdToName(rentalInfo.os_id, "OS") }}</td>
-        <td>{{ displayItem.convertIdToName(rentalInfo.cpu_id, "CPU") }}コア</td>
-        <td>{{ displayItem.convertIdToName(rentalInfo.memory_id, "Memory") }}GB</td>
-        <td>{{ displayItem.convertIdToName(rentalInfo.storage_type_id, "StorageType") }}</td>
-        <td>{{ displayItem.convertIdToName(rentalInfo.storage_capacity_id, "StorageCapacity") }}GB</td>
-        <td>{{ rentalInfo.employee_id }}</td>
-        <td>{{ rentalInfo.rental_start_date }}</td>
-        <td>{{ rentalInfo.rental_end_date }}</td>
-        <td>{{ checkStatus(rentalInfo.rental_start_date, rentalInfo.rental_end_date) }}</td>
+    <tr *ngFor="let rentalInfo of itemService.getRentalInfoList()">
+        <td>{{ itemService.convertIdToName(rentalInfo.deviceId, "Device") }}</td>
+        <td>{{ itemService.convertIdToName(rentalInfo.osId, "OS") }}</td>
+        <td>{{ itemService.convertIdToName(rentalInfo.cpuId, "CPU") }}</td>
+        <td>{{ itemService.convertIdToName(rentalInfo.memoryId, "Memory") }}</td>
+        <td>{{ itemService.convertIdToName(rentalInfo.storageTypeId, "StorageType") }}</td>
+        <td>{{ itemService.convertIdToName(rentalInfo.storageCapacityId, "StorageCapacity") }}</td>
+        <td>{{ rentalInfo.employeeId }}</td>
+        <td>{{ rentalInfo.jpnsName }}</td>
+        <td>{{ rentalInfo.rentalStartDate }}</td>
+        <td>{{ rentalInfo.rentalEndDate }}</td>
+        <td>{{ rentalInfo.rentalDeviceId }}</td>
+        <td>{{ itemService.checkStatus(rentalInfo.rentalStartDate, rentalInfo.rentalEndDate) }}</td>
         <td><input type="button" value="編集" (click)="goUpdate(rentalInfo)"></td>
-        <td><input type="button" value="削除" (click)="goDelete(rentalInfo.rental_device_id)"></td>
+        <td><input type="button" value="削除" (click)="goDelete(rentalInfo.rentalDeviceId)"></td>
     </tr>
 </table>
 
+
+<h2>貸出申請</h2>
+<h2>{{ itemService.deviceApplyMessage }}</h2>
+<form [formGroup]="applyForm" (ngSubmit)="goApply()">
+    <table>
+        <tr>
+            <th>機器</th>
+            <th>OS</th>
+            <th>CPU</th>
+            <th>メモリ</th>
+            <th>タイプ</th>
+            <th>容量</th>
+            <th>従業員ID</th>
+            <th>貸出開始日</th>
+        </tr>
+        <tr>
+            <td>
+                <select formControlName="deviceId">
+                    <option></option>
+                    <option *ngFor="let device of itemService.deviceList" [value]="device.id">
+                        {{device.name}}
+                    </option>
+                </select>
+            </td>
+            <td>
+                <select formControlName="osId">
+                    <option></option>
+                    <option *ngFor="let os of itemService.osList" [value]="os.id">
+                        {{os.name}}
+                    </option>
+                </select>
+            </td>
+            <td>
+                <select formControlName="cpuId">
+                    <option></option>
+                    <option *ngFor="let cpu of itemService.cpuList" [value]="cpu.id">
+                        {{cpu.core}}コア
+                    </option>
+                </select>    
+            </td>
+            <td>
+                <select formControlName="memoryId">
+                    <option></option>
+                    <option *ngFor="let memory of itemService.memoryList" [value]="memory.id">
+                        {{memory.gbyte}}GB
+                    </option>
+                </select>
+            </td>
+            <td>
+                <select formControlName="storageTypeId">
+                    <option></option>
+                    <option *ngFor="let storageType of itemService.storageTypeList" [value]="storageType.id">
+                        {{storageType.name}}
+                    </option>
+                </select>
+            </td>
+            <td>
+                <select formControlName="storageCapacityId">
+                    <option></option>
+                    <option *ngFor="let storageCapacity of itemService.storageCapacityList" [value]="storageCapacity.id">
+                        {{storageCapacity.gbyte}}GB
+                    </option>
+                </select>    
+            </td>
+            <td>
+                <input type="text" formControlName="employeeId">
+                <div *ngIf="employeeId.invalid" class="error">
+                    従業員IDを入力して下さい
+                </div>
+            </td>
+            <td>
+                <input type="text" formControlName="rentalStartDate">
+                <div *ngIf="rentalStartDate.invalid" class="error">
+                    YYYY/MM/DD形式で入力して下さい
+                </div>
+            </td>
+        </tr>
+    </table>
+    <input type="submit" value="申請" [disabled]="applyForm.invalid">
+</form>
+
+
+<h2>返却申請</h2>
+<form [formGroup]="returnForm" (ngSubmit)="goReturn()">
+    <table>
+        <tr>
+            <th>機器ID</th>
+            <th>返却日</th>
+        </tr>
+        <tr>
+            <td>
+                <input type="text" formControlName="rentalDeviceId">
+                <div *ngIf="rentalDeviceId.invalid" class="error">
+                        機器IDを入力して下さい
+                </div>    
+            </td>
+            <td>
+                <input type="text" formControlName="rentalEndDate">
+                <div *ngIf="rentalEndDate.invalid" class="error">
+                    YYYY/MM/DD形式で入力して下さい
+                </div>
+            </td>
+        </tr>
+    </table>
+    <input type="submit" value="返却" [disabled]="returnForm.invalid">
+</form>

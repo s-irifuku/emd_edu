@@ -13,12 +13,12 @@ export class AppComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private service: ServerCommunicationService
+    private serverService: ServerCommunicationService
   ) { }
 
   ngOnInit() {
     //マスタデータ読込
-    this.service.reqMaster();
+    this.serverService.reqMaster();
     //初期表示
     this.systemName = 'EMD名簿管理システム';
     this.router.navigate(['emp-list']);

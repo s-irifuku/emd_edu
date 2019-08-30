@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms'
 
 import {ServerCommunicationService} from '../server-communication.service'
+import {DisplayItemService} from '../display-item.service';
 
 
 @Component({
@@ -10,18 +11,18 @@ import {ServerCommunicationService} from '../server-communication.service'
   styleUrls: ['./emp-update.component.css']
 })
 export class EmpUpdateComponent implements OnInit {
+  // 更新フォーム
   updForm: FormGroup;
-  branchList = [];
-  departmentList = [];
 
   constructor(
-    private service: ServerCommunicationService,
-    private fb: FormBuilder
+    private serverService: ServerCommunicationService
+    , private itemService: DisplayItemService
+    , private fb: FormBuilder
   ) { }
 
   ngOnInit() {
-    // 詳細情報を初期値に設定したフォーム作成
-    var empDetail = this.service.getEmpDetail();
+    // 詳細情報を初期値に設定した更新フォーム作成
+    var empDetail = this.itemService.empDetail;
     this.updForm = this.fb.group({
       jpnsName: [empDetail.jpnsName, [Validators.required]],
       jpnsKana: [empDetail.jpnsKana, [Validators.required]],
@@ -41,8 +42,6 @@ export class EmpUpdateComponent implements OnInit {
       branchId: [empDetail.branchId, [Validators.required]],
       departmentId: [empDetail.departmentId, [Validators.required]]
     });
-    this.branchList = this.service.getDisplayBranchList();
-    this.departmentList = this.service.getDisplayDepartmentList();
   }
 
   get jpnsName() { return this.updForm.get('jpnsName'); }
@@ -62,16 +61,16 @@ export class EmpUpdateComponent implements OnInit {
   get branchId() { return this.updForm.get('branchId'); }
   get departmentId() { return this.updForm.get('departmentId'); }
 
+  // 更新処理
   onSubmit() {
     if (!this.updForm.invalid) {
-      this.service.reqEmpUpdate(this.updForm);
+      this.serverService.reqEmpUpdate(this.updForm);
     }
   }
 
-  get errorMessage() {return this.service.updateErrorMessage;}
-
+  // 詳細画面へ戻る
   onBack() {
-    this.service.updateErrorMessage = '';
+    this.itemService.updateErrorMessage = '';
   }
 
 }

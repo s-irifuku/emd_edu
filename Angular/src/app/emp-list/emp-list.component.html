@@ -79,7 +79,7 @@
             入社年月日
         </th>
     </tr>
-    <tr *ngFor="let emp of getEmpList()">
+    <tr *ngFor="let emp of itemService.getEmpInfoList()">
         <td>
             <a routerLink="/emp-detail" (click)='onEmployeeId(emp.id)'>{{emp.id}}</a>
         </td>

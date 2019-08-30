@@ -7,42 +7,42 @@
     </tr>
     <tr>
         <td>名前</td>
-        <td>{{getEmpDetail().jpnsName}}</td>
+        <td>{{ itemService.empDetail.jpnsName }}</td>
     </tr>
     <tr>
         <td>ふりがな</td>
-        <td>{{getEmpDetail().jpnsKana}}</td>
+        <td>{{ itemService.empDetail.jpnsKana }}</td>
     </tr>
     <tr>
         <td>name</td>
-        <td>{{getEmpDetail().romaName}}</td>
+        <td>{{ itemService.empDetail.romaName }}</td>
     </tr>
     <tr>
         <td>性別</td>
-        <td [ngSwitch]="getEmpDetail().sex">
+        <td [ngSwitch]="itemService.empDetail.sex">
             <p *ngSwitchCase="0">男性</p>
             <p *ngSwitchCase="1">女性</p>
         </td>
         <td>生年月日</td>
-        <td>{{getEmpDetail().birthDate}}</td>
+        <td>{{ itemService.empDetail.birthDate }}</td>
     </tr>
     <tr>
         <td>住所</td>
-        <td>{{getEmpDetail().postalCode}}</td>
-        <td>{{getEmpDetail().address}}</td>
+        <td>{{ itemService.empDetail.postalCode }}</td>
+        <td>{{ itemService.empDetail.address }}</td>
     </tr>
     <tr>
         <td>電話番号</td>
-        <td>{{getEmpDetail().telNo}}</td>
+        <td>{{ itemService.empDetail.telNo }}</td>
     </tr>
     <tr>
         <td>メールアドレス</td>
-        <td>{{getEmpDetail().mailAddress}}</td>
+        <td>{{ itemService.empDetail.mailAddress }}</td>
     </tr>
     <tr>
         <td>最終学歴</td>
-        <td>{{getEmpDetail().finalEducation}} 
-            <span [ngSwitch]="getEmpDetail().educationDivision">
+        <td>{{ itemService.empDetail.finalEducation }} 
+            <span [ngSwitch]="itemService.empDetail.educationDivision">
                 <p *ngSwitchCase="0">卒業</p>
                 <p *ngSwitchCase="1">中退</p>
                 <p *ngSwitchCase="2">在学中</p>
@@ -51,26 +51,26 @@
     </tr>
     <tr>
         <td>従業員ID</td>
-        <td>{{getEmpDetail().employeeId}}</td>
+        <td>{{ itemService.empDetail.employeeId }}</td>
     </tr>
     <tr>
         <td>入社年月日</td>
-        <td>{{getEmpDetail().joinDate}}</td>
+        <td>{{ itemService.empDetail.joinDate }}</td>
     </tr>
     <tr>
         <td>自社メールアドレス</td>
-        <td>{{getEmpDetail().companyMailAddress}}</td>
+        <td>{{ itemService.empDetail.companyMailAddress }}</td>
     </tr>    
     <tr>
         <td>支店</td>
-        <td [ngSwitch]="getEmpDetail().branchId">
-            <span *ngFor="let branch of branchList">
+        <td [ngSwitch]="itemService.empDetail.branchId">
+            <span *ngFor="let branch of itemService.branchList">
                 <p *ngSwitchCase="branch.id">{{branch.name}}</p>
             </span>
         </td>
         <td>部署</td>
-        <td [ngSwitch]="getEmpDetail().departmentId">
-            <span *ngFor="let department of departmentList">
+        <td [ngSwitch]="itemService.empDetail.departmentId">
+            <span *ngFor="let department of itemService.departmentList">
                 <p *ngSwitchCase="department.id">{{department.name}}</p>
             </span>
         </td>

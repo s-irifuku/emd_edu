@@ -6,7 +6,7 @@
             <td>
                 <p>機器</p>
                 <select formControlName="deviceId">
-                    <option *ngFor="let device of displayItem.deviceList" [value]="device.id" [selected]="device.id == displayItem.upd_device_id">
+                    <option *ngFor="let device of itemService.deviceList" [value]="device.id">
                         {{device.name}}
                     </option>
                 </select>
@@ -17,7 +17,7 @@
             <td>
                 <p>OS</p>
                 <select formControlName="osId">
-                    <option *ngFor="let os of displayItem.osList" [value]="os.id" [selected]="os.id == displayItem.upd_os_id">
+                    <option *ngFor="let os of itemService.osList" [value]="os.id">
                         {{os.name}}
                     </option>
                 </select>
@@ -30,7 +30,7 @@
             <td>
                 <p>CPU</p>
                 <select formControlName="cpuId">
-                    <option *ngFor="let cpu of displayItem.cpuList" [value]="cpu.id" [selected]="cpu.id == displayItem.upd_cpu_id">
+                    <option *ngFor="let cpu of itemService.cpuList" [value]="cpu.id">
                         {{cpu.core}}コア
                     </option>
                 </select>
@@ -41,7 +41,7 @@
             <td>
                 <p>メモリー</p>
                 <select formControlName="memoryId">
-                    <option *ngFor="let memory of displayItem.memoryList" [value]="memory.id" [selected]="memory.id == displayItem.upd_memory_id">
+                    <option *ngFor="let memory of itemService.memoryList" [value]="memory.id">
                         {{memory.gbyte}}GB
                     </option>
                 </select>
@@ -54,7 +54,7 @@
             <td>
                 <p>ストレージタイプ</p>
                 <select formControlName="storageTypeId">
-                    <option *ngFor="let storageType of displayItem.storageTypeList" [value]="storageType.id" [selected]="storageType.id == displayItem.upd_storage_type_id">
+                    <option *ngFor="let storageType of itemService.storageTypeList" [value]="storageType.id">
                         {{storageType.name}}
                     </option>
                 </select>
@@ -65,7 +65,7 @@
             <td>
                 <p>ストレージ容量</p>
                 <select formControlName="storageCapacityId">
-                    <option *ngFor="let storageCapacity of displayItem.storageCapacityList" [value]="storageCapacity.id" [selected]="storageCapacity.id == displayItem.upd_storage_capacity_id">
+                    <option *ngFor="let storageCapacity of itemService.storageCapacityList" [value]="storageCapacity.id">
                         {{storageCapacity.gbyte}}GB
                     </option>
                 </select>

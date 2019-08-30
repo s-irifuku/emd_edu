@@ -14,17 +14,17 @@ export class ResUpdateComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private service: ServerCommunicationService,
-    private displayItem: DisplayItemService// 消さない事
+    private itemService: DisplayItemService// 消さない事
   ) { }
 
   ngOnInit() {
     this.updForm = this.fb.group({
-      deviceId: ['', [Validators.required]],
-      osId: ['', [Validators.required]],
-      cpuId: ['', [Validators.required]],
-      memoryId: ['', [Validators.required]],
-      storageTypeId: ['', [Validators.required]],
-      storageCapacityId: ['', [Validators.required]]
+      deviceId: [this.itemService.updDeviceId, [Validators.required]],
+      osId: [this.itemService.updOsId, [Validators.required]],
+      cpuId: [this.itemService.updCpuId, [Validators.required]],
+      memoryId: [this.itemService.updMemoryId, [Validators.required]],
+      storageTypeId: [this.itemService.updStorageTypeId, [Validators.required]],
+      storageCapacityId: [this.itemService.updStorageCapacityId, [Validators.required]]
     })
   }
   get deviceId() { return this.updForm.get('deviceId'); }
@@ -36,7 +36,7 @@ export class ResUpdateComponent implements OnInit {
 
   onSubmit() {
     if (!this.updForm.invalid) {
-       this.service.reqResUpdate(this.updForm);
+       this.service.reqResUpdate(this.updForm, this.itemService.updRentalDeviceId);
     }
   }
 }

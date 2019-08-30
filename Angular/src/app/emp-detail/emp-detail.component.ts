@@ -3,35 +3,34 @@ import { Router } from '@angular/router';
 
 import {ServerCommunicationService} from '../server-communication.service'
 import { EmpDetail } from '../receive-json-model';
+import { DisplayItemService } from '../display-item.service';
 @Component({
   selector: 'app-emp-detail',
   templateUrl: './emp-detail.component.html',
   styleUrls: ['./emp-detail.component.css']
 })
 export class EmpDetailComponent implements OnInit {
-  branchList = [];
-  departmentList = [];
 
-  constructor(private router:Router, private service: ServerCommunicationService) { }
+  constructor(
+    private router:Router
+    , private itemService: DisplayItemService
+    , private serverService: ServerCommunicationService
+  ) { }
 
   ngOnInit() {
-    this.service.reqEmpDetail();
-    this.branchList = this.service.getDisplayBranchList();
-    this.departmentList = this.service.getDisplayDepartmentList();
+    this.serverService.reqEmpDetail();
   }
 
-  getEmpDetail() {
-    return this.service.getEmpDetail();
-  }
-
+  // 一覧画面へ戻る
   goList() {
-    this.service.employee_id = '';
+    this.itemService.employee_id = '';
     this.router.navigate(['/emp-list']);
   }
 
+  // 削除する。
   goDelete() {
-    this.service.reqEmpDelete();
-    this.service.employee_id = '';
+    this.serverService.reqEmpDelete();
+    this.itemService.employee_id = '';
     this.router.navigate(['/emp-list']);
   }
 }

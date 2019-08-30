@@ -13,19 +13,19 @@ export class ResInsertComponent implements OnInit {
   insForm: FormGroup;
 
   constructor(
-    private fb: FormBuilder,
-    private service: ServerCommunicationService,
-    private displayItem: DisplayItemService//消さない事
+    private fb: FormBuilder
+    , private service: ServerCommunicationService
+    , private displayItem: DisplayItemService//消さない事
   ) { }
 
   ngOnInit() {
     this.insForm = this.fb.group({
-      deviceId: ['', [Validators.required]],
-      osId: ['', [Validators.required]],
-      cpuId: ['', [Validators.required]],
-      memoryId: ['', [Validators.required]],
-      storageTypeId: ['', [Validators.required]],
-      storageCapacityId: ['', [Validators.required]]
+      deviceId: ['', [Validators.required]]
+      , osId: ['', [Validators.required]]
+      , cpuId: ['', [Validators.required]]
+      , memoryId: ['', [Validators.required]]
+      , storageTypeId: ['', [Validators.required]]
+      , storageCapacityId: ['', [Validators.required]]
     });  
   }
   get deviceId() { return this.insForm.get('deviceId'); }

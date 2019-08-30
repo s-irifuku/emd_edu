@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators} from '@angular/forms'
 
 import { ServerCommunicationService } from '../server-communication.service'
+import { DisplayItemService } from '../display-item.service';
 
 @Component({
   selector: 'app-emp-insert',
@@ -10,12 +11,11 @@ import { ServerCommunicationService } from '../server-communication.service'
 })
 export class EmpInsertComponent implements OnInit {
   insForm: FormGroup;
-  branchList = [];
-  departmentList = [];
 
   constructor(
     private fb: FormBuilder,
-    private service: ServerCommunicationService
+    private itemService: DisplayItemService,
+    private serverService: ServerCommunicationService
   ) { }
 
   ngOnInit() {
@@ -36,8 +36,6 @@ export class EmpInsertComponent implements OnInit {
       branchId: ['', [Validators.required]],
       departmentId: ['', [Validators.required]]
     });
-    this.branchList = this.service.getDisplayBranchList();
-    this.departmentList = this.service.getDisplayDepartmentList();
   }
 
   get jpnsName() { return this.insForm.get('jpnsName'); }
@@ -58,13 +56,15 @@ export class EmpInsertComponent implements OnInit {
 
   onSubmit() {
     if (!this.insForm.invalid) {
-      this.service.reqEmpInsert(this.insForm);
+      this.serverService.reqEmpInsert(this.insForm);
     }
   }
 
-  get errorMessage() {return this.service.insertErrorMessage;}
+  get errorMessage() {
+    return this.itemService.insertErrorMessage;
+  }
 
   onBack() {
-    this.service.insertErrorMessage = '';
+    this.itemService.insertErrorMessage = '';
   }
 }

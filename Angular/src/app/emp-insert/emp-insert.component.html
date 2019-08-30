@@ -145,7 +145,7 @@
             <td>
                 <p>所属支店</p>
                 <select formControlName="branchId">
-                    <option *ngFor="let branch of branchList" 
+                    <option *ngFor="let branch of itemService.branchList" 
                         [value]="branch.id">{{branch.name}}
                     </option>
                 </select>
@@ -156,7 +156,7 @@
             <td>
                 <p>所属部署</p>
                 <select formControlName="departmentId">
-                    <option *ngFor="let department of departmentList" 
+                    <option *ngFor="let department of itemService.departmentList" 
                         [value]="department.id">{{department.name}}
                     </option>
                 </select>

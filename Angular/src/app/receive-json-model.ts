@@ -1,8 +1,8 @@
 
 // マスタ情報
 export class Master {
-  branch_dictionary: {};//支店
-  department_dictionary: {};//部署
+  branch_list: [];//支店
+  department_list: [];//部署
   device_list: [];//機器
   os_list: [];//OS
   cpu_list: [];//CPU
